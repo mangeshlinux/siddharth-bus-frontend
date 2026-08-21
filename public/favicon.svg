@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="favBus" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047" />
+      <stop offset="50%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+    <radialGradient id="favBg" cx="50%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#3B2314" />
+      <stop offset="100%" stop-color="#150A04" />
+    </radialGradient>
+  </defs>
+  <rect x="8" y="8" width="184" height="184" rx="46" fill="url(#favBg)" stroke="#F59E0B" stroke-width="6" />
+  
+  <!-- School Bus Silhouette -->
+  <g transform="translate(100, 95)">
+    <!-- Destination header -->
+    <rect x="-42" y="-50" width="84" height="12" rx="3" fill="#1E1108" stroke="#F59E0B" stroke-width="1.5" />
+    <!-- Cab -->
+    <path d="M -50,-38 C -50,-42 -44,-45 -36,-45 L 36,-45 C 44,-45 50,-42 50,-38 L 52,20 C 52,26 46,30 38,30 L -38,30 C -46,30 -52,26 -52,20 Z" 
+          fill="url(#favBus)" stroke="#78350F" stroke-width="3" />
+    <!-- Windshield -->
+    <rect x="-42" y="-36" width="84" height="34" rx="4" fill="#38BDF8" stroke="#0284C7" stroke-width="2" />
+    <line x1="0" y1="-36" x2="0" y2="-2" stroke="#1E1108" stroke-width="2.5" />
+    <!-- Headlights -->
+    <circle cx="-38" cy="15" r="7" fill="#FEF08A" stroke="#B45309" stroke-width="2" />
+    <circle cx="38" cy="15" r="7" fill="#FEF08A" stroke="#B45309" stroke-width="2" />
+    <!-- Grille -->
+    <rect x="-26" y="8" width="52" height="15" rx="3" fill="#1E1108" stroke="#D97706" stroke-width="1.5" />
+    <line x1="-18" y1="13" x2="18" y2="13" stroke="#F59E0B" stroke-width="2" />
+    <line x1="-18" y1="18" x2="18" y2="18" stroke="#F59E0B" stroke-width="2" />
+    <!-- Bumper -->
+    <rect x="-56" y="28" width="112" height="12" rx="4" fill="#2A1810" stroke="#F59E0B" stroke-width="2" />
+  </g>
+</svg>

@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+@theme {
+  --color-espresso: #3B2314;
+  --color-espresso-dark: #2A1810;
+  --color-brand-amber: #D97B29;
+  --color-brand-amber-dark: #C4621C;
+  --color-bronze: #B08D57;
+  --color-bronze-dark: #9A7947;
+  --color-cream: #FBF3E7;
+  --color-cream-dark: #F5E8D3;
+  --color-surface: #FFFFFF;
+  --color-text-primary: #231A12;
+  --color-text-secondary: #7A6A5C;
+  --color-sage: #6B8F71;
+  --color-sage-dark: #56735B;
+}
+
+@layer base {
+  :root {
+    --bg-main: #FBF3E7;
+    --bg-card: #FFFFFF;
+    --border-color: #B08D57;
+    --text-primary: #231A12;
+    --text-secondary: #7A6A5C;
+    --color-espresso: #3B2314;
+    --color-amber: #D97B29;
+    --color-bronze: #B08D57;
+    --color-sage: #6B8F71;
+    
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  body {
+    background-color: #FBF3E7;
+    color: #231A12;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+/* Warm Cream & Amber Gradient Background */
+.bg-warm-canvas {
+  background: linear-gradient(
+    135deg,
+    #FBF3E7 0%,
+    #FFFDF9 35%,
+    #F5E8D3 70%,
+    #FBF3E7 100%
+  );
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.8deg);
+  }
+}
+
+.animate-float {
+  animation: float 4.5s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.01);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+/* Pulsing Bronze / Amber Glow */
+@keyframes pulseBronzeGlow {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(217, 123, 41, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(176, 141, 87, 0.45);
+  }
+}
+
+.animate-glow-bronze {
+  animation: pulseBronzeGlow 3s infinite;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F5E8D3;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #B08D57;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D97B29;
+}
+
+/* Smooth Continuous Notice Ticker / Marquee Animation */
+@keyframes tickerSlide {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-ticker {
+  display: inline-flex;
+  animation: tickerSlide 30s linear infinite;
+  will-change: transform;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
+

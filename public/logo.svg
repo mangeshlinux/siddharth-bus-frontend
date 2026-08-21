@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <!-- Rich Golden Amber Gradient -->
+    <linearGradient id="schoolBusYellow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047" />
+      <stop offset="25%" stop-color="#FBBF24" />
+      <stop offset="70%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+
+    <!-- Metallic Gold Rim -->
+    <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A" />
+      <stop offset="50%" stop-color="#D97706" />
+      <stop offset="100%" stop-color="#B45309" />
+    </linearGradient>
+
+    <!-- Deep Espresso Radial Shield -->
+    <radialGradient id="espressoShield" cx="50%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#3B2314" />
+      <stop offset="65%" stop-color="#24140B" />
+      <stop offset="100%" stop-color="#150A04" />
+    </radialGradient>
+
+    <!-- Windshield Sky Blue Gradient -->
+    <linearGradient id="windshieldGlass" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E0F2FE" />
+      <stop offset="40%" stop-color="#BAE6FD" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+
+    <filter id="badgeShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#D97706" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Luxury Squircle Badge Base -->
+  <rect x="8" y="8" width="184" height="184" rx="46" fill="url(#espressoShield)" stroke="url(#goldBorder)" stroke-width="4.5" filter="url(#badgeShadow)" />
+  
+  <!-- Subtle Inner Golden Line -->
+  <rect x="16" y="16" width="168" height="168" rx="38" fill="none" stroke="url(#goldBorder)" stroke-width="1.2" stroke-opacity="0.5" />
+
+  <!-- FRONT-FACING SCHOOL BUS VECTOR EMBLEM -->
+  <g transform="translate(100, 96)">
+    
+    <!-- Top Flasher / Safety Beacons -->
+    <circle cx="-36" cy="-56" r="4.5" fill="#EF4444" stroke="#7F1D1D" stroke-width="1.5" />
+    <circle cx="36" cy="-56" r="4.5" fill="#EF4444" stroke="#7F1D1D" stroke-width="1.5" />
+    <circle cx="-16" cy="-57" r="3.5" fill="#FEF08A" stroke="#B45309" stroke-width="1.2" />
+    <circle cx="16" cy="-57" r="3.5" fill="#FEF08A" stroke="#B45309" stroke-width="1.2" />
+    
+    <!-- Bus Roof Destination Header Board -->
+    <rect x="-44" y="-55" width="88" height="12" rx="4" fill="#1E1108" stroke="url(#goldBorder)" stroke-width="1.5" />
+    <text x="0" y="-46.5" font-family="'Outfit', sans-serif" font-size="7.5" font-weight="900" fill="#FEF08A" text-anchor="middle" letter-spacing="1.5">SCHOOL BUS</text>
+
+    <!-- Main Bus Cab Body -->
+    <path d="M -54,-42 C -54,-45 -48,-48 -40,-48 L 40,-48 C 48,-48 54,-45 54,-42 L 56,18 C 56,24 50,28 42,28 L -42,28 C -50,28 -56,24 -56,18 Z" 
+          fill="url(#schoolBusYellow)" 
+          stroke="#78350F" 
+          stroke-width="2.5" />
+
+    <!-- Dual Side Mirrors -->
+    <rect x="-64" y="-28" width="6" height="16" rx="2.5" fill="#1E1108" stroke="#F59E0B" stroke-width="1" />
+    <line x1="-58" y1="-20" x2="-54" y2="-20" stroke="#78350F" stroke-width="2.5" />
+    <rect x="58" y="-28" width="6" height="16" rx="2.5" fill="#1E1108" stroke="#F59E0B" stroke-width="1" />
+    <line x1="58" y1="-20" x2="54" y2="-20" stroke="#78350F" stroke-width="2.5" />
+
+    <!-- Wide Panoramic Windshield Glass -->
+    <path d="M -46,-40 L 46,-40 C 49,-40 50,-38 49,-34 L 46,-6 C 45,-3 43,-1 40,-1 L -40,-1 C -43,-1 -45,-3 -46,-6 L -49,-34 C -50,-38 -49,-40 -46,-40 Z" 
+          fill="url(#windshieldGlass)" 
+          stroke="#0369A1" 
+          stroke-width="1.5" />
+
+    <!-- Center Windshield Divider -->
+    <line x1="0" y1="-40" x2="0" y2="-1" stroke="#1E1108" stroke-width="2" />
+
+    <!-- Rear-view Passenger Silhouettes inside bus -->
+    <circle cx="-22" cy="-18" r="4.5" fill="#0C4A6E" opacity="0.8" />
+    <circle cx="22" cy="-18" r="4.5" fill="#0C4A6E" opacity="0.8" />
+
+    <!-- Front Radiator Grille -->
+    <rect x="-34" y="6" width="68" height="16" rx="4" fill="#1E1108" stroke="#92400E" stroke-width="1.5" />
+    <line x1="-26" y1="11" x2="26" y2="11" stroke="#F59E0B" stroke-width="1.5" />
+    <line x1="-26" y1="17" x2="26" y2="17" stroke="#F59E0B" stroke-width="1.5" />
+    
+    <!-- Central Brand Monogram "S" on Grille -->
+    <circle cx="0" cy="14" r="5" fill="#D97706" stroke="#FEF08A" stroke-width="1" />
+    <text x="0" y="17" font-family="'Outfit', sans-serif" font-size="7" font-weight="900" fill="#FFFFFF" text-anchor="middle">S</text>
+
+    <!-- Twin Glowing Headlights -->
+    <circle cx="-42" cy="14" r="6" fill="#FEF08A" stroke="#D97706" stroke-width="1.5" />
+    <circle cx="-42" cy="14" r="3" fill="#FFFFFF" />
+    <circle cx="42" cy="14" r="6" fill="#FEF08A" stroke="#D97706" stroke-width="1.5" />
+    <circle cx="42" cy="14" r="3" fill="#FFFFFF" />
+
+    <!-- Heavy-Duty Front Bumper -->
+    <path d="M -58,26 L 58,26 C 60,26 62,28 61,31 L 58,35 C 57,37 54,38 50,38 L -50,38 C -54,38 -57,37 -58,35 L -61,31 C -62,28 -60,26 -58,26 Z" 
+          fill="#2A1810" 
+          stroke="url(#goldBorder)" 
+          stroke-width="1.5" />
+
+    <!-- Front Tires -->
+    <rect x="-52" y="36" width="16" height="8" rx="2" fill="#150A04" />
+    <rect x="36" y="36" width="16" height="8" rx="2" fill="#150A04" />
+  </g>
+
+  <!-- Clean Bottom Brand Text: "SIDDHARTH" -->
+  <text x="100" y="174" 
+        font-family="'Outfit', sans-serif" 
+        font-size="11.5" 
+        font-weight="900" 
+        fill="url(#goldBorder)" 
+        text-anchor="middle" 
+        letter-spacing="4.5">SIDDHARTH</text>
+</svg>

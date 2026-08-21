@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280" width="100%" height="100%">
+  <rect width="280" height="280" fill="#FFFFFF" rx="16"/>
+  
+  <!-- Outer Finder 1 (Top Left) -->
+  <rect x="20" y="20" width="64" height="64" rx="10" fill="#0F172A" />
+  <rect x="28" y="28" width="48" height="48" rx="6" fill="#FFFFFF" />
+  <rect x="36" y="36" width="32" height="32" rx="4" fill="#0F172A" />
+
+  <!-- Outer Finder 2 (Top Right) -->
+  <rect x="196" y="20" width="64" height="64" rx="10" fill="#0F172A" />
+  <rect x="204" y="28" width="48" height="48" rx="6" fill="#FFFFFF" />
+  <rect x="212" y="36" width="32" height="32" rx="4" fill="#0F172A" />
+
+  <!-- Outer Finder 3 (Bottom Left) -->
+  <rect x="20" y="196" width="64" height="64" rx="10" fill="#0F172A" />
+  <rect x="28" y="204" width="48" height="48" rx="6" fill="#FFFFFF" />
+  <rect x="36" y="212" width="32" height="32" rx="4" fill="#0F172A" />
+
+  <!-- Alignment Pattern (Bottom Right) -->
+  <rect x="200" y="200" width="32" height="32" rx="6" fill="#0F172A" />
+  <rect x="206" y="206" width="20" height="20" rx="3" fill="#FFFFFF" />
+  <rect x="212" y="212" width="8" height="8" rx="2" fill="#0F172A" />
+
+  <!-- Timing Patterns -->
+  <g fill="#0F172A">
+    <!-- Horizontal Timing Pattern -->
+    <rect x="92" y="48" width="8" height="8" rx="2"/>
+    <rect x="108" y="48" width="8" height="8" rx="2"/>
+    <rect x="124" y="48" width="8" height="8" rx="2"/>
+    <rect x="140" y="48" width="8" height="8" rx="2"/>
+    <rect x="156" y="48" width="8" height="8" rx="2"/>
+    <rect x="172" y="48" width="8" height="8" rx="2"/>
+
+    <!-- Vertical Timing Pattern -->
+    <rect x="48" y="92" width="8" height="8" rx="2"/>
+    <rect x="48" y="108" width="8" height="8" rx="2"/>
+    <rect x="48" y="124" width="8" height="8" rx="2"/>
+    <rect x="48" y="140" width="8" height="8" rx="2"/>
+    <rect x="48" y="156" width="8" height="8" rx="2"/>
+    <rect x="48" y="172" width="8" height="8" rx="2"/>
+
+    <!-- Data Blocks Matrix -->
+    <rect x="92" y="20" width="8" height="8" rx="2"/>
+    <rect x="108" y="20" width="8" height="8" rx="2"/>
+    <rect x="132" y="20" width="16" height="8" rx="2"/>
+    <rect x="164" y="20" width="8" height="8" rx="2"/>
+
+    <rect x="100" y="32" width="16" height="8" rx="2"/>
+    <rect x="124" y="32" width="8" height="8" rx="2"/>
+    <rect x="148" y="32" width="16" height="8" rx="2"/>
+    <rect x="172" y="32" width="8" height="8" rx="2"/>
+
+    <rect x="92" y="64" width="8" height="16" rx="2"/>
+    <rect x="116" y="64" width="16" height="8" rx="2"/>
+    <rect x="148" y="64" width="8" height="8" rx="2"/>
+    <rect x="164" y="64" width="16" height="8" rx="2"/>
+
+    <!-- Middle Data -->
+    <rect x="20" y="92" width="16" height="8" rx="2"/>
+    <rect x="68" y="92" width="8" height="8" rx="2"/>
+    <rect x="92" y="92" width="8" height="8" rx="2"/>
+    <rect x="172" y="92" width="16" height="8" rx="2"/>
+    <rect x="200" y="92" width="8" height="16" rx="2"/>
+    <rect x="224" y="92" width="16" height="8" rx="2"/>
+    <rect x="248" y="92" width="12" height="8" rx="2"/>
+
+    <rect x="28" y="108" width="8" height="16" rx="2"/>
+    <rect x="68" y="108" width="16" height="8" rx="2"/>
+    <rect x="180" y="108" width="8" height="8" rx="2"/>
+    <rect x="216" y="108" width="16" height="8" rx="2"/>
+    <rect x="244" y="108" width="16" height="8" rx="2"/>
+
+    <rect x="20" y="132" width="16" height="8" rx="2"/>
+    <rect x="68" y="132" width="8" height="8" rx="2"/>
+    <rect x="200" y="132" width="24" height="8" rx="2"/>
+    <rect x="236" y="132" width="8" height="16" rx="2"/>
+    <rect x="252" y="132" width="8" height="8" rx="2"/>
+
+    <rect x="20" y="148" width="8" height="16" rx="2"/>
+    <rect x="36" y="148" width="16" height="8" rx="2"/>
+    <rect x="68" y="148" width="16" height="8" rx="2"/>
+    <rect x="196" y="148" width="8" height="8" rx="2"/>
+    <rect x="212" y="148" width="16" height="8" rx="2"/>
+    <rect x="248" y="148" width="12" height="16" rx="2"/>
+
+    <rect x="28" y="172" width="16" height="8" rx="2"/>
+    <rect x="60" y="172" width="8" height="8" rx="2"/>
+    <rect x="180" y="172" width="16" height="8" rx="2"/>
+    <rect x="204" y="172" width="8" height="8" rx="2"/>
+    <rect x="224" y="172" width="16" height="8" rx="2"/>
+
+    <!-- Bottom Matrix -->
+    <rect x="92" y="196" width="16" height="8" rx="2"/>
+    <rect x="116" y="196" width="8" height="16" rx="2"/>
+    <rect x="132" y="196" width="16" height="8" rx="2"/>
+    <rect x="156" y="196" width="8" height="8" rx="2"/>
+    <rect x="172" y="196" width="16" height="8" rx="2"/>
+
+    <rect x="92" y="212" width="8" height="8" rx="2"/>
+    <rect x="108" y="212" width="8" height="16" rx="2"/>
+    <rect x="140" y="212" width="8" height="8" rx="2"/>
+    <rect x="156" y="212" width="16" height="8" rx="2"/>
+    <rect x="180" y="212" width="8" height="8" rx="2"/>
+
+    <rect x="92" y="228" width="16" height="8" rx="2"/>
+    <rect x="124" y="228" width="16" height="8" rx="2"/>
+    <rect x="148" y="228" width="8" height="16" rx="2"/>
+    <rect x="164" y="228" width="16" height="8" rx="2"/>
+
+    <rect x="92" y="248" width="8" height="12" rx="2"/>
+    <rect x="108" y="248" width="24" height="12" rx="2"/>
+    <rect x="140" y="248" width="8" height="12" rx="2"/>
+    <rect x="156" y="248" width="24" height="12" rx="2"/>
+    <rect x="188" y="248" width="8" height="12" rx="2"/>
+    <rect x="204" y="248" width="16" height="12" rx="2"/>
+    <rect x="228" y="248" width="16" height="12" rx="2"/>
+    <rect x="252" y="248" width="8" height="12" rx="2"/>
+  </g>
+
+  <!-- Center Badge / Shield -->
+  <rect x="108" y="108" width="64" height="64" rx="14" fill="#FFFFFF" stroke="#0F172A" stroke-width="3" />
+  <circle cx="140" cy="140" r="22" fill="#D97706" />
+  <path d="M130 148 L130 135 C130 132 133 130 137 130 L143 130 C147 130 150 132 150 135 L150 148 M130 142 L150 142 M133 150 A2 2 0 1 0 133 146 A2 2 0 1 0 133 150 M147 150 A2 2 0 1 0 147 146 A2 2 0 1 0 147 150" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
