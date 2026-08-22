@@ -17,13 +17,14 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 
-# Environment variables
+# Environment variables (CRITICAL: NEVER COMMIT REAL SECRETS)
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example

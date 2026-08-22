@@ -358,8 +358,6 @@ export const OWNER_CONFIG = {
   whatsappNumber: "918767948553",
   email: "siddharth.travels.nashik@gmail.com",
   officeAddress: "Shop No. 4, Shree Samarth Plaza, Near College Road, Nashik - 422005",
-  adminPin: "9999",
-  secretPass: "siddharth2026",
   estYear: "2017",
   city: "Nashik"
 };

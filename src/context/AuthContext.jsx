@@ -2,8 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { authAPI, studentsAPI, noticesAPI, schoolsAPI, fleetAPI, paymentsAPI } from '../services/api';
 import {
   INITIAL_SCHOOLS,
-  INITIAL_FLEET,
-  OWNER_CONFIG
+  INITIAL_FLEET
 } from '../services/mockData';
 
 export function calculateFeeBreakdown(student) {

@@ -8,7 +8,7 @@ export default function OwnerLoginModal({ isOpen, onClose }) {
   const { loginOwner } = useAuth();
   const navigate = useNavigate();
 
-  const [pin, setPin] = useState('9999');
+  const [pin, setPin] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -26,7 +26,7 @@ export default function OwnerLoginModal({ isOpen, onClose }) {
       onClose();
       navigate('/admin-portal-x9f2');
     } else {
-      setError(res.error || 'Invalid Owner PIN. Default PIN is 9999');
+      setError(res.error || 'Invalid Owner PIN / Password.');
     }
   };
 
@@ -70,12 +70,12 @@ export default function OwnerLoginModal({ isOpen, onClose }) {
               required
               value={pin}
               onChange={(e) => setPin(e.target.value)}
-              placeholder="Enter PIN"
+              placeholder="Enter Owner PIN / Password"
               className="w-full bg-[#FBF3E7]/70 border border-[#B08D57]/60 rounded-xl px-4 py-3 text-center text-xl font-mono font-bold text-[#231A12] placeholder-[#7A6A5C]/60 focus:outline-none focus:border-[#D97B29] focus:bg-white"
               autoFocus
             />
             <p className="text-[11px] text-[#7A6A5C] text-center mt-1.5 font-medium">
-              Default Operator PIN: <strong className="text-[#3B2314] font-mono">9999</strong>
+              Enter operator access PIN or master password
             </p>
           </div>
 
