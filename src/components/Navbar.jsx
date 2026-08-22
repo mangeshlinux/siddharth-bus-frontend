@@ -42,16 +42,17 @@ export default function Navbar() {
           </Link>
 
           {/* Right Header Actions: Integrated UPI Pay Button & Logout */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               type="button"
               onClick={() => setIsQrModalOpen(true)}
-              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 bg-[#2A1810] hover:bg-[#20110A] text-white border border-[#B08D57]/50 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer group"
+              className="flex items-center gap-1 sm:gap-2 p-1.5 sm:px-3.5 sm:py-2 bg-[#2A1810] hover:bg-[#20110A] text-white border border-[#B08D57]/50 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer group flex-shrink-0"
+              title="Scan UPI QR Code to Pay (8767948553@upi)"
             >
               <QrCode className="w-4 h-4 text-[#D97B29] group-hover:scale-110 transition-transform flex-shrink-0" />
               <span className="hidden md:inline text-zinc-300">UPI Pay:</span>
-              <span className="font-mono text-[#D97B29] text-[11px] sm:text-xs">
-                <span className="sm:hidden">Pay UPI</span>
+              <span className="font-mono text-[#D97B29] text-[10px] sm:text-xs">
+                <span className="inline sm:hidden">UPI</span>
                 <span className="hidden sm:inline">8767948553@upi</span>
               </span>
             </button>
@@ -60,10 +61,10 @@ export default function Navbar() {
               <button
                 onClick={handleLogout}
                 title="Logout"
-                className="flex items-center gap-1 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-[#2A1810] hover:bg-red-800 text-[#FBF3E7] hover:text-white border border-[#B08D57]/40 text-xs font-bold transition-colors cursor-pointer"
+                className="hidden sm:flex items-center gap-1 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-[#2A1810] hover:bg-red-800 text-[#FBF3E7] hover:text-white border border-[#B08D57]/40 text-xs font-bold transition-colors cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Logout</span>
+                <span>Logout</span>
               </button>
             )}
           </div>

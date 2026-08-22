@@ -203,57 +203,57 @@ export default function ParentDashboard() {
 
         {/* 2. DUAL MONTHLY & PHASE 2 HOUSEHOLD SUMMARY STRIP */}
         <div className="bg-white border border-[#E5DAC6] rounded-2xl p-4 sm:p-5 shadow-xs">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 divide-x divide-[#F5E8D3]">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 divide-y sm:divide-y-0 sm:divide-x divide-[#F5E8D3]">
             
             {/* Metric 1: Monthly Commitment */}
-            <div className="px-2 sm:px-3">
+            <div className="p-2 sm:px-3">
               <span className="text-[10px] font-bold text-[#7A6A5C] uppercase tracking-wider block">
                 Monthly Transport Rate
               </span>
-              <div className="text-xl sm:text-2xl font-black text-[#231A12] font-mono mt-0.5">
+              <div className="text-lg sm:text-2xl font-black text-[#231A12] font-mono mt-0.5">
                 {formatCurrency(totalHouseholdMonthly)} <span className="text-xs font-bold text-[#7A6A5C]">/ mo</span>
               </div>
-              <div className="text-[11px] text-[#7A6A5C] mt-0.5">
+              <div className="text-[10px] sm:text-[11px] text-[#7A6A5C] mt-0.5">
                 Total Annual: <strong>{formatCurrency(totalHouseholdAnnual)}</strong>
               </div>
             </div>
 
             {/* Metric 2: Phase 1 Status */}
-            <div className="px-2 sm:px-3">
+            <div className="p-2 sm:px-3">
               <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">
                 Phase 1 (Term 1)
               </span>
-              <div className="text-xl sm:text-2xl font-black font-mono mt-0.5 text-emerald-700">
+              <div className="text-lg sm:text-2xl font-black font-mono mt-0.5 text-emerald-700">
                 {isHouseholdPhase1Cleared ? '100% Cleared' : 'Action Needed'}
               </div>
-              <div className="text-[11px] text-emerald-800 font-bold mt-0.5">
-                {isHouseholdPhase1Cleared ? '✓ All Phase 1 Receipts Issued' : 'Pending Phase 1 Balance'}
+              <div className="text-[10px] sm:text-[11px] text-emerald-800 font-bold mt-0.5">
+                {isHouseholdPhase1Cleared ? '✓ Receipts Issued' : 'Pending Balance'}
               </div>
             </div>
 
             {/* Metric 3: Phase 2 Status */}
-            <div className="px-2 sm:px-3">
+            <div className="p-2 sm:px-3 pt-3 sm:pt-2">
               <span className="text-[10px] font-bold text-[#D97B29] uppercase tracking-wider block">
                 Phase 2 (Term 2)
               </span>
-              <div className={`text-xl sm:text-2xl font-black font-mono mt-0.5 ${isHouseholdPhase2Cleared ? 'text-emerald-700' : 'text-[#D97B29]'}`}>
+              <div className={`text-lg sm:text-2xl font-black font-mono mt-0.5 ${isHouseholdPhase2Cleared ? 'text-emerald-700' : 'text-[#D97B29]'}`}>
                 {isHouseholdPhase2Cleared ? '100% Cleared' : (totalHouseholdDue > 0 ? formatCurrency(totalHouseholdDue) : 'Due Soon')}
               </div>
-              <div className="text-[11px] text-[#7A6A5C] font-medium mt-0.5">
-                {isHouseholdPhase2Cleared ? '✓ Academic Year Settled' : 'Cycle: Nov 2026 – Mar 2027'}
+              <div className="text-[10px] sm:text-[11px] text-[#7A6A5C] font-medium mt-0.5">
+                {isHouseholdPhase2Cleared ? '✓ Settled' : 'Cycle: Nov – Mar'}
               </div>
             </div>
 
             {/* Metric 4: Monthly Due Pending */}
-            <div className="px-2 sm:px-3">
+            <div className="p-2 sm:px-3 pt-3 sm:pt-2">
               <span className="text-[10px] font-bold text-red-800 uppercase tracking-wider block">
                 Monthly Due Pending
               </span>
-              <div className="text-xl sm:text-2xl font-black text-red-700 font-mono mt-0.5">
+              <div className="text-lg sm:text-2xl font-black text-red-700 font-mono mt-0.5">
                 {totalHouseholdMonthlyDue > 0 ? formatCurrency(totalHouseholdMonthlyDue) : '₹0'} <span className="text-xs font-bold text-red-600">/ mo</span>
               </div>
-              <div className="text-[11px] text-red-700 font-medium mt-0.5">
-                {totalHouseholdDue > 0 ? `Total Balance: ${formatCurrency(totalHouseholdDue)}` : 'All Fees Cleared'}
+              <div className="text-[10px] sm:text-[11px] text-red-700 font-medium mt-0.5">
+                {totalHouseholdDue > 0 ? `Total: ${formatCurrency(totalHouseholdDue)}` : 'All Cleared'}
               </div>
             </div>
 

@@ -132,12 +132,12 @@ export default function Home() {
           </div>
 
           {/* Direct Support & Helpline Actions */}
-          <div className="pt-2 flex flex-wrap items-center gap-3">
+          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
             <a
               href="tel:8767948553"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white border-2 border-[#B08D57] hover:border-[#D97B29] text-[#231A12] text-xs sm:text-sm font-black shadow-xs transition-all hover:scale-102 cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white border-2 border-[#B08D57] hover:border-[#D97B29] text-[#231A12] text-xs sm:text-sm font-black shadow-xs transition-all hover:scale-102 cursor-pointer"
             >
-              <PhoneCall className="w-4 h-4 text-[#D97B29]" />
+              <PhoneCall className="w-4 h-4 text-[#D97B29] flex-shrink-0" />
               <span>Call Helpline: 8767948553</span>
             </a>
 
@@ -145,9 +145,9 @@ export default function Home() {
               href="https://wa.me/918767948553?text=Hello%20Siddharth%20Travels,%20I%20am%20a%20parent%20in%20Nashik%20inquiring%20about%20school%20bus%20routes."
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#6B8F71] hover:bg-[#56735B] text-white text-xs sm:text-sm font-black shadow-md shadow-[#6B8F71]/25 transition-all hover:scale-102 cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-[#6B8F71] hover:bg-[#56735B] text-white text-xs sm:text-sm font-black shadow-md shadow-[#6B8F71]/25 transition-all hover:scale-102 cursor-pointer"
             >
-              <MessageSquare className="w-4 h-4" />
+              <MessageSquare className="w-4 h-4 flex-shrink-0" />
               <span>WhatsApp Direct</span>
             </a>
           </div>
@@ -155,40 +155,40 @@ export default function Home() {
         </div>
 
         {/* RIGHT COLUMN: Large & Prominent Integrated Parent Portal */}
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-5 w-full">
           <motion.div 
             initial={{ scale: 0.92, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white p-8 sm:p-10 rounded-3xl border-3 border-[#B08D57] shadow-2xl shadow-[#3B2314]/10 text-left space-y-6 relative overflow-hidden"
+            className="bg-white p-5 sm:p-8 lg:p-10 rounded-3xl border-2 sm:border-3 border-[#B08D57] shadow-2xl shadow-[#3B2314]/10 text-left space-y-5 sm:space-y-6 relative overflow-hidden"
           >
             {/* Ambient Corner Flare */}
             <div className="absolute -top-12 -right-12 w-32 h-32 bg-[#D97B29]/15 rounded-full blur-2xl pointer-events-none" />
 
             {/* Portal Header */}
-            <div className="flex items-center justify-between pb-4 border-b border-[#F5E8D3]">
+            <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-[#F5E8D3]">
               <div className="flex items-center gap-2.5">
-                <div className="p-2.5 rounded-2xl bg-[#3B2314] text-[#D97B29]">
-                  <Smartphone className="w-6 h-6" />
+                <div className="p-2 sm:p-2.5 rounded-2xl bg-[#3B2314] text-[#D97B29]">
+                  <Smartphone className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <div>
-                  <div className="text-xs font-black uppercase tracking-wider text-[#231A12]">
+                  <div className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-[#231A12]">
                     Official Parent Portal
                   </div>
-                  <div className="text-[11px] text-[#7A6A5C] font-medium">
+                  <div className="text-[10px] sm:text-[11px] text-[#7A6A5C] font-medium">
                     Nashik Academic Transport 2026-27
                   </div>
                 </div>
               </div>
 
-              <span className="text-[11px] font-mono font-black text-[#2F4F35] bg-[#EAF2EC] px-2.5 py-1 rounded-lg border border-[#6B8F71]/50">
+              <span className="text-[10px] sm:text-[11px] font-mono font-black text-[#2F4F35] bg-[#EAF2EC] px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg border border-[#6B8F71]/50">
                 Online Active
               </span>
             </div>
 
             {/* Title */}
             <div>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#231A12] font-heading leading-tight">
+              <h2 className="text-xl sm:text-3xl font-black text-[#231A12] font-heading leading-tight">
                 Parent Portal Access
               </h2>
               <p className="text-xs sm:text-sm text-[#7A6A5C] mt-1 font-medium">
@@ -197,20 +197,20 @@ export default function Home() {
             </div>
 
             {error && (
-              <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs font-bold flex items-center gap-2.5">
-                <AlertCircle className="w-5 h-5 flex-shrink-0" />
+              <div className="p-3 sm:p-4 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs font-bold flex items-center gap-2.5">
+                <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
                 <span>{error}</span>
               </div>
             )}
 
             {/* Form */}
-            <form onSubmit={handleQuickLogin} className="space-y-5">
+            <form onSubmit={handleQuickLogin} className="space-y-4 sm:space-y-5">
               <div>
-                <label className="block text-xs font-black text-[#231A12] uppercase tracking-wider mb-2">
+                <label className="block text-xs font-black text-[#231A12] uppercase tracking-wider mb-1.5 sm:mb-2">
                   Parent Mobile Number
                 </label>
                 <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[#7A6A5C] font-mono font-black border-r-2 border-[#B08D57]/40 pr-3">
+                  <div className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 text-xs sm:text-sm text-[#7A6A5C] font-mono font-black border-r-2 border-[#B08D57]/40 pr-2.5 sm:pr-3">
                     🇮🇳 +91
                   </div>
                   <input
@@ -220,11 +220,11 @@ export default function Home() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="Enter 10-digit number"
-                    className="w-full bg-[#FBF3E7]/60 border-2 border-[#B08D57]/60 rounded-2xl pl-24 pr-4 py-4 text-xl font-mono font-black text-[#231A12] placeholder-[#7A6A5C]/60 focus:outline-none focus:border-[#D97B29] focus:bg-white transition-all shadow-inner"
+                    className="w-full bg-[#FBF3E7]/60 border-2 border-[#B08D57]/60 rounded-2xl pl-20 sm:pl-24 pr-4 py-3 sm:py-4 text-base sm:text-xl font-mono font-black text-[#231A12] placeholder-[#7A6A5C]/60 focus:outline-none focus:border-[#D97B29] focus:bg-white transition-all shadow-inner"
                   />
                 </div>
                 
-                <div className="flex items-center justify-between text-xs mt-2.5 text-[#7A6A5C] font-medium">
+                <div className="flex items-center justify-between text-[11px] sm:text-xs mt-2 text-[#7A6A5C] font-medium">
                   <span>Quick Test Account:</span>
                   <button 
                     type="button" 
@@ -240,24 +240,24 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={loading || phone.replace(/\D/g, '').length < 10}
-                className="w-full py-4 sm:py-5 rounded-2xl bg-gradient-to-r from-[#D97B29] to-[#C4621C] hover:from-[#C4621C] hover:to-[#B55515] text-white font-black text-base uppercase tracking-wider shadow-xl shadow-[#D97B29]/30 transition-all flex items-center justify-center gap-3 cursor-pointer disabled:opacity-50 active:scale-98"
+                className="w-full py-3.5 sm:py-5 rounded-2xl bg-gradient-to-r from-[#D97B29] to-[#C4621C] hover:from-[#C4621C] hover:to-[#B55515] text-white font-black text-sm sm:text-base uppercase tracking-wider shadow-xl shadow-[#D97B29]/30 transition-all flex items-center justify-center gap-2 sm:gap-3 cursor-pointer disabled:opacity-50 active:scale-98"
               >
                 {loading ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     <span>Logging in...</span>
                   </>
                 ) : (
                   <>
                     <span>Login to Parent Dashboard</span>
-                    <ArrowRight className="w-5 h-5 stroke-[3]" />
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3]" />
                   </>
                 )}
               </button>
             </form>
 
             {/* Verified Benefits */}
-            <div className="pt-4 border-t border-[#F5E8D3] flex items-center justify-center gap-2 text-xs text-[#231A12] font-bold">
+            <div className="pt-3 sm:pt-4 border-t border-[#F5E8D3] flex items-center justify-center gap-2 text-[11px] sm:text-xs text-[#231A12] font-bold">
               <CheckCircle2 className="w-4 h-4 text-[#6B8F71] flex-shrink-0" />
               <span>Instant Digital Fee Receipts &amp; Statements</span>
             </div>

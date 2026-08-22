@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { authAPI, studentsAPI, noticesAPI, schoolsAPI, fleetAPI, paymentsAPI } from '../services/api';
+import BusLoader from '../components/BusLoader';
 import {
   INITIAL_SCHOOLS,
   INITIAL_FLEET
@@ -315,15 +316,14 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  // Show loading spinner while restoring session
+  // Show animated bus loader while restoring session / waking up server
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FBF3E7]">
-        <div className="text-center space-y-3">
-          <div className="w-10 h-10 border-4 border-[#D97B29] border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-sm font-bold text-[#7A6A5C]">Loading Siddharth Bus Portal...</p>
-        </div>
-      </div>
+      <BusLoader 
+        message="Connecting & Waking Up Server..."
+        subtext="Backend services on Render may take a moment to spin up from sleep mode. Please stay on page!"
+        fullScreen={true}
+      />
     );
   }
 
