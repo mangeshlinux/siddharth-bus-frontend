@@ -66,6 +66,8 @@ export default function NotificationModal({ isOpen, onClose }) {
     }
   ];
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleApplyTemplate = (tmpl) => {
     setTitle(tmpl.title);
     setMessage(tmpl.body);
@@ -73,26 +75,30 @@ export default function NotificationModal({ isOpen, onClose }) {
     setSentStatus('');
   };
 
-  const handlePublish = (e) => {
+  const handlePublish = async (e) => {
     e.preventDefault();
     if (!title.trim() || !message.trim()) return;
 
-    broadcastNotice({
+    setIsSubmitting(true);
+    const res = await broadcastNotice({
       title: title.trim(),
       content: message.trim(),
       target: targetAudience,
       urgent: isUrgent
     });
+    setIsSubmitting(false);
 
-    setSentStatus('Notice published live to the top ticker & parent portal!');
-    setTitle('');
-    setMessage('');
-    setIsUrgent(false);
+    if (res) {
+      setSentStatus('Notice published live to the top ticker & parent portal!');
+      setTitle('');
+      setMessage('');
+      setIsUrgent(false);
 
-    setTimeout(() => {
-      setSentStatus('');
-      onClose();
-    }, 1500);
+      setTimeout(() => {
+        setSentStatus('');
+        onClose();
+      }, 1500);
+    }
   };
 
   return (

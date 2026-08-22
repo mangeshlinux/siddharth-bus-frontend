@@ -157,16 +157,27 @@ export default function ExcelUploadModal({ isOpen, onClose }) {
     }
   };
 
-  const handleConfirmImport = () => {
+  const handleConfirmImport = async () => {
     if (parsedData.length === 0) return;
-    bulkImportStudents(parsedData);
-    setIsSuccess(true);
-    setTimeout(() => {
-      onClose();
-      setIsSuccess(false);
-      setFile(null);
-      setParsedData([]);
-    }, 1500);
+    setIsProcessing(true);
+    try {
+      const res = await bulkImportStudents(parsedData);
+      if (res) {
+        setIsSuccess(true);
+        setTimeout(() => {
+          onClose();
+          setIsSuccess(false);
+          setFile(null);
+          setParsedData([]);
+        }, 1500);
+      } else {
+        setErrorMsg('Failed to import students to database. Please check connection and try again.');
+      }
+    } catch (err) {
+      setErrorMsg(err.message || 'Error occurred during bulk import.');
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const downloadSampleTemplate = () => {
