@@ -79,14 +79,21 @@ export default function StudentTable({ onAddStudentClick }) {
 
   // Filter Logic
   const filteredStudents = useMemo(() => {
-    return students.filter(s => {
+    return (students || []).filter(s => {
+      if (!s) return false;
       const cleanTerm = searchTerm.toLowerCase().trim();
-      const matchesSearch = 
-        s.studentName.toLowerCase().includes(cleanTerm) ||
-        s.parentPhone.includes(cleanTerm) ||
-        s.parentName.toLowerCase().includes(cleanTerm) ||
-        (s.rollNo && s.rollNo.toLowerCase().includes(cleanTerm)) ||
-        (s.stopName && s.stopName.toLowerCase().includes(cleanTerm));
+      const studentName = (s.studentName || '').toLowerCase();
+      const parentPhone = String(s.parentPhone || '');
+      const parentName = (s.parentName || '').toLowerCase();
+      const rollNo = (s.rollNo || '').toLowerCase();
+      const stopName = (s.stopName || '').toLowerCase();
+
+      const matchesSearch = !cleanTerm || 
+        studentName.includes(cleanTerm) ||
+        parentPhone.includes(cleanTerm) ||
+        parentName.includes(cleanTerm) ||
+        rollNo.includes(cleanTerm) ||
+        stopName.includes(cleanTerm);
 
       const matchesSchool = selectedSchool === 'ALL' || s.schoolName === selectedSchool;
 

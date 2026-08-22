@@ -121,20 +121,26 @@ export default function OwnerPortal_x9f2() {
     XLSX.writeFile(workbook, `Siddharth_Travels_Roster_${new Date().toISOString().split('T')[0]}.xlsx`);
   };
 
-  const handleQuickPublish = (e) => {
+  const [quickPublishing, setQuickPublishing] = useState(false);
+
+  const handleQuickPublish = async (e) => {
     e.preventDefault();
     if (!quickTitle.trim() || !quickBody.trim()) return;
 
-    broadcastNotice({
+    setQuickPublishing(true);
+    const res = await broadcastNotice({
       title: quickTitle.trim(),
       content: quickBody.trim(),
       target: quickTarget,
       urgent: quickUrgent
     });
+    setQuickPublishing(false);
 
-    setQuickTitle('');
-    setQuickBody('');
-    setQuickUrgent(false);
+    if (res) {
+      setQuickTitle('');
+      setQuickBody('');
+      setQuickUrgent(false);
+    }
   };
 
   return (
@@ -393,11 +399,11 @@ export default function OwnerPortal_x9f2() {
 
                   <button
                     type="submit"
-                    disabled={!quickTitle.trim() || !quickBody.trim()}
+                    disabled={quickPublishing || !quickTitle.trim() || !quickBody.trim()}
                     className="px-4 py-2 bg-[#D97B29] hover:bg-[#C4621C] text-white font-bold text-xs rounded-xl shadow-xs transition-colors cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
                   >
                     <Send className="w-3 h-3" />
-                    <span>Publish</span>
+                    <span>{quickPublishing ? 'Publishing...' : 'Publish'}</span>
                   </button>
                 </div>
               </form>
