@@ -5,7 +5,7 @@
  * Uses native fetch. All requests include JWT token from localStorage.
  */
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://siddharth-bus-backend.onrender.com/api' : '/api');
 
 // ─── Token Management ───
 const getToken = () => localStorage.getItem('siddharth_auth_token');

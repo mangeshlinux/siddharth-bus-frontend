@@ -82,10 +82,13 @@ export default function OwnerLoginModal({ isOpen, onClose }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 rounded-xl bg-[#3B2314] hover:bg-[#2A1810] text-white font-bold text-xs uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            className="w-full py-3.5 rounded-xl bg-[#3B2314] hover:bg-[#2A1810] text-white font-bold text-xs uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
           >
             {loading ? (
-              <span>Authenticating...</span>
+              <>
+                <div className="w-4 h-4 border-2 border-[#D97B29] border-t-transparent rounded-full animate-spin"></div>
+                <span>Authenticating (Connecting to Server)...</span>
+              </>
             ) : (
               <>
                 <Lock className="w-4 h-4 text-[#D97B29]" />

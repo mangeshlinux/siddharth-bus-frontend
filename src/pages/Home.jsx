@@ -37,7 +37,9 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleQuickLogin = (e) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleQuickLogin = async (e) => {
     e.preventDefault();
     setError('');
     const clean = phone.replace(/\D/g, '').slice(-10);
@@ -46,11 +48,18 @@ export default function Home() {
       return;
     }
 
-    const res = loginParent(clean);
-    if (res.success) {
-      navigate('/parent-dashboard');
-    } else {
-      setError(res.error || 'Mobile number not found in student records.');
+    setLoading(true);
+    try {
+      const res = await loginParent(clean);
+      if (res && res.success) {
+        navigate('/parent-dashboard');
+      } else {
+        setError(res?.error || 'Mobile number not found in student records. Please check the number or contact Siddharth Travels.');
+      }
+    } catch (err) {
+      setError(err.message || 'Login failed. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -230,11 +239,20 @@ export default function Home() {
               {/* Big CTA Button */}
               <button
                 type="submit"
-                disabled={phone.replace(/\D/g, '').length < 10}
+                disabled={loading || phone.replace(/\D/g, '').length < 10}
                 className="w-full py-4 sm:py-5 rounded-2xl bg-gradient-to-r from-[#D97B29] to-[#C4621C] hover:from-[#C4621C] hover:to-[#B55515] text-white font-black text-base uppercase tracking-wider shadow-xl shadow-[#D97B29]/30 transition-all flex items-center justify-center gap-3 cursor-pointer disabled:opacity-50 active:scale-98"
               >
-                <span>Login to Parent Dashboard</span>
-                <ArrowRight className="w-5 h-5 stroke-[3]" />
+                {loading ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Logging in...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Login to Parent Dashboard</span>
+                    <ArrowRight className="w-5 h-5 stroke-[3]" />
+                  </>
+                )}
               </button>
             </form>
 

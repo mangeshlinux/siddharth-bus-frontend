@@ -23,44 +23,49 @@ export default function AddStudentModal({ isOpen, onClose }) {
     paidAmount: '0'
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     const cleanParentPhone = formData.parentPhone.replace(/\D/g, '').slice(-10);
     if (!formData.studentName.trim() || cleanParentPhone.length !== 10) {
-      alert('Please enter a valid student name and 10-digit parent mobile number.');
+      setError('Please enter a valid student name and 10-digit parent mobile number.');
       return;
     }
 
-    addStudent({
-      studentName: formData.studentName.trim(),
-      rollNo: formData.rollNo.trim() || `NSK-${Math.floor(1000 + Math.random() * 9000)}`,
-      parentName: formData.parentName.trim() || 'Parent',
-      parentPhone: cleanParentPhone,
-      alternatePhone: formData.alternatePhone ? formData.alternatePhone.replace(/\D/g, '').slice(-10) : '',
-      email: formData.email.trim(),
-      schoolName: formData.schoolName,
-      grade: formData.grade.trim() || 'Grade 1',
-      busNo: formData.busNo,
-      routeName: formData.routeName,
-      stopName: formData.stopName.trim() || 'Designated Stop',
-      pickupTime: formData.pickupTime,
-      dropTime: formData.dropTime,
-      feeDetails: (() => {
-        const total = Number(formData.totalAnnualFee) || 30000;
-        const paid = Number(formData.paidAmount) || 0;
-        const due = Math.max(0, total - paid);
-        const p1Target = Math.round(total / 2);
-        const p2Target = total - p1Target;
-        const p1Paid = Math.min(paid, p1Target);
-        const p2Paid = Math.max(0, paid - p1Target);
-        const p1Due = Math.max(0, p1Target - p1Paid);
-        const p2Due = Math.max(0, p2Target - p2Paid);
-        const receiptNo = paid > 0 ? `REC-2026-${Math.floor(1000 + Math.random() * 9000)}` : null;
-        const today = new Date().toISOString().split('T')[0];
+    setIsSubmitting(true);
+    try {
+      const total = Number(formData.totalAnnualFee) || 30000;
+      const paid = Number(formData.paidAmount) || 0;
+      const due = Math.max(0, total - paid);
+      const p1Target = Math.round(total / 2);
+      const p2Target = total - p1Target;
+      const p1Paid = Math.min(paid, p1Target);
+      const p2Paid = Math.max(0, paid - p1Target);
+      const p1Due = Math.max(0, p1Target - p1Paid);
+      const p2Due = Math.max(0, p2Target - p2Paid);
+      const receiptNo = paid > 0 ? `REC-2026-${Math.floor(1000 + Math.random() * 9000)}` : null;
+      const today = new Date().toISOString().split('T')[0];
 
-        return {
+      const newStudentRecord = {
+        studentName: formData.studentName.trim(),
+        rollNo: formData.rollNo.trim() || `NSK-${Math.floor(1000 + Math.random() * 9000)}`,
+        parentName: formData.parentName.trim() || 'Parent',
+        parentPhone: cleanParentPhone,
+        alternatePhone: formData.alternatePhone ? formData.alternatePhone.replace(/\D/g, '').slice(-10) : '',
+        email: formData.email.trim(),
+        schoolName: formData.schoolName,
+        grade: formData.grade.trim() || 'Grade 1',
+        busNo: formData.busNo,
+        routeName: formData.routeName,
+        stopName: formData.stopName.trim() || 'Designated Stop',
+        pickupTime: formData.pickupTime,
+        dropTime: formData.dropTime,
+        feeDetails: {
           totalAnnualFee: total,
           paidAmount: paid,
           dueAmount: due,
@@ -84,11 +89,20 @@ export default function AddStudentModal({ isOpen, onClose }) {
               term: p1Due === 0 && p2Due === 0 ? 'Full Academic Year (Phase 1 & 2)' : (p1Due === 0 ? 'Phase 1 (Term 1) Transport Fee' : 'Initial Transport Installment')
             }
           ] : []
-        };
-      })()
-    });
+        }
+      };
 
-    onClose();
+      const result = await addStudent(newStudentRecord);
+      if (result) {
+        onClose();
+      } else {
+        setError('Failed to save student record to backend. Please check connection and try again.');
+      }
+    } catch (err) {
+      setError(err.message || 'Error occurred while saving student record.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -120,6 +134,13 @@ export default function AddStudentModal({ isOpen, onClose }) {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4 pt-4 text-xs">
+          
+          {error && (
+            <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-bold flex items-center gap-2">
+              <X className="w-4 h-4 flex-shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -244,16 +265,25 @@ export default function AddStudentModal({ isOpen, onClose }) {
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 rounded-xl bg-[#F5E8D3] hover:bg-[#B08D57]/30 text-[#231A12] font-bold text-xs cursor-pointer"
+              disabled={isSubmitting}
+              className="px-5 py-2.5 rounded-xl bg-[#F5E8D3] hover:bg-[#B08D57]/30 text-[#231A12] font-bold text-xs cursor-pointer disabled:opacity-50"
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#D97B29] to-[#C4621C] hover:from-[#C4621C] hover:to-[#B55515] text-white font-black text-xs shadow-md shadow-[#D97B29]/30 transition-all cursor-pointer"
+              disabled={isSubmitting}
+              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#D97B29] to-[#C4621C] hover:from-[#C4621C] hover:to-[#B55515] text-white font-black text-xs shadow-md shadow-[#D97B29]/30 transition-all cursor-pointer disabled:opacity-60 flex items-center gap-2"
             >
-              Register Student Record
+              {isSubmitting ? (
+                <>
+                  <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Saving to Database...</span>
+                </>
+              ) : (
+                <span>Register Student Record</span>
+              )}
             </button>
           </div>
 
