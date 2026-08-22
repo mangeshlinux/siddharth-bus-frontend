@@ -28,38 +28,41 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           
           {/* Brand Logo & Name (Horizontal Layout) */}
-          <Link to="/" className="flex items-center gap-3 sm:gap-4 group py-2">
+          <Link to="/" className="flex items-center gap-2.5 sm:gap-4 group py-2">
             <Logo size="md" />
             <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3 text-left">
-              <span className="text-2xl sm:text-3xl font-black text-white tracking-tight font-heading group-hover:text-[#D97B29] transition-colors leading-none">
+              <span className="text-xl sm:text-3xl font-black text-white tracking-tight font-heading group-hover:text-[#D97B29] transition-colors leading-none">
                 SIDDHARTH
               </span>
               <span className="hidden sm:inline-block h-5 w-[2px] bg-[#B08D57]/60 rounded-full" />
-              <span className="text-xs sm:text-sm font-bold text-[#D97B29] tracking-wider uppercase sm:mt-0.5 leading-tight">
+              <span className="text-[10px] sm:text-sm font-bold text-[#D97B29] tracking-wider uppercase sm:mt-0.5 leading-tight">
                 School Bus &amp; Travels • Nashik
               </span>
             </div>
           </Link>
 
           {/* Right Header Actions: Integrated UPI Pay Button & Logout */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setIsQrModalOpen(true)}
-              className="flex items-center gap-2 px-3.5 py-2 bg-[#2A1810] hover:bg-[#20110A] text-white border border-[#B08D57]/50 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer group"
+              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 bg-[#2A1810] hover:bg-[#20110A] text-white border border-[#B08D57]/50 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer group"
             >
-              <QrCode className="w-4 h-4 text-[#D97B29] group-hover:scale-110 transition-transform" />
+              <QrCode className="w-4 h-4 text-[#D97B29] group-hover:scale-110 transition-transform flex-shrink-0" />
               <span className="hidden md:inline text-zinc-300">UPI Pay:</span>
-              <span className="font-mono text-[#D97B29]">8767948553@upi</span>
+              <span className="font-mono text-[#D97B29] text-[11px] sm:text-xs">
+                <span className="sm:hidden">Pay UPI</span>
+                <span className="hidden sm:inline">8767948553@upi</span>
+              </span>
             </button>
 
             {user && (
               <button
                 onClick={handleLogout}
                 title="Logout"
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#2A1810] hover:bg-red-800 text-[#FBF3E7] hover:text-white border border-[#B08D57]/40 text-xs font-bold transition-colors cursor-pointer"
+                className="flex items-center gap-1 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-[#2A1810] hover:bg-red-800 text-[#FBF3E7] hover:text-white border border-[#B08D57]/40 text-xs font-bold transition-colors cursor-pointer"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Logout</span>
               </button>
             )}

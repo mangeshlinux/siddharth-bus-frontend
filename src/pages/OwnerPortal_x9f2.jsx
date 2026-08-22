@@ -222,57 +222,57 @@ export default function OwnerPortal_x9f2() {
 
         {/* 2. REVENUE & FINANCIAL SUMMARY (MONTHLY & YEARLY DUAL BREAKDOWN) */}
         <div className="bg-white border border-[#E5DAC6] rounded-2xl p-4 shadow-xs">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 divide-x divide-[#F5E8D3]">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 divide-y sm:divide-y-0 sm:divide-x divide-[#F5E8D3]">
             
             {/* Stat 1: Total Revenue Contract (Yearly + Monthly) */}
-            <div className="px-3">
+            <div className="p-2 sm:px-3">
               <span className="text-[10px] font-bold text-[#7A6A5C] uppercase tracking-wider block">
                 Total Revenue
               </span>
-              <div className="text-xl sm:text-2xl font-black text-[#231A12] font-mono mt-0.5">
+              <div className="text-lg sm:text-2xl font-black text-[#231A12] font-mono mt-0.5">
                 {formatCurrency(totalAnnualValue)}
               </div>
-              <div className="text-[11px] text-[#7A6A5C] font-mono mt-0.5">
+              <div className="text-[10px] sm:text-[11px] text-[#7A6A5C] font-mono mt-0.5">
                 <strong>{formatCurrency(totalMonthlyContract)}</strong> / mo expected
               </div>
             </div>
 
             {/* Stat 2: Collected Revenue (Yearly + Monthly avg) */}
-            <div className="px-3">
+            <div className="p-2 sm:px-3">
               <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">
                 Collected Revenue
               </span>
-              <div className="text-xl sm:text-2xl font-black text-emerald-700 font-mono mt-0.5">
+              <div className="text-lg sm:text-2xl font-black text-emerald-700 font-mono mt-0.5">
                 {formatCurrency(totalCollectedFees)}
               </div>
-              <div className="text-[11px] text-emerald-700 font-bold mt-0.5">
-                {collectionPercentage}% Cleared ({formatCurrency(monthlyAvgCollected)}/mo avg)
+              <div className="text-[10px] sm:text-[11px] text-emerald-700 font-bold mt-0.5">
+                {collectionPercentage}% Cleared ({formatCurrency(monthlyAvgCollected)}/mo)
               </div>
             </div>
 
             {/* Stat 3: Monthly & Yearly Due Breakdown */}
-            <div className="px-3">
+            <div className="p-2 sm:px-3 pt-3 sm:pt-2">
               <span className="text-[10px] font-bold text-red-800 uppercase tracking-wider block">
                 Monthly Due Pending
               </span>
-              <div className="text-xl sm:text-2xl font-black text-red-700 font-mono mt-0.5">
+              <div className="text-lg sm:text-2xl font-black text-red-700 font-mono mt-0.5">
                 {formatCurrency(monthlyPendingDue)} <span className="text-xs font-bold text-red-600">/ mo</span>
               </div>
-              <div className="text-[11px] text-red-700 font-medium mt-0.5">
-                Yearly Total Due: <strong>{formatCurrency(totalPendingDues)}</strong> ({pendingStudentsCount} pending)
+              <div className="text-[10px] sm:text-[11px] text-red-700 font-medium mt-0.5">
+                Yearly: <strong>{formatCurrency(totalPendingDues)}</strong> ({pendingStudentsCount} pending)
               </div>
             </div>
 
             {/* Stat 4: Student Roster Coverage */}
-            <div className="px-3">
+            <div className="p-2 sm:px-3 pt-3 sm:pt-2">
               <span className="text-[10px] font-bold text-[#7A6A5C] uppercase tracking-wider block">
                 Enrolled Roster
               </span>
-              <div className="text-xl sm:text-2xl font-black text-[#231A12] font-mono mt-0.5">
+              <div className="text-lg sm:text-2xl font-black text-[#231A12] font-mono mt-0.5">
                 {totalStudents} <span className="text-xs font-normal text-[#7A6A5C]">Students</span>
               </div>
-              <div className="text-[11px] text-[#7A6A5C] mt-0.5">
-                Across {schools.length} Partner Schools in Nashik
+              <div className="text-[10px] sm:text-[11px] text-[#7A6A5C] mt-0.5">
+                Across {schools.length} Schools in Nashik
               </div>
             </div>
 

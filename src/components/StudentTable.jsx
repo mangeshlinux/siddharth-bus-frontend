@@ -165,6 +165,16 @@ export default function StudentTable({ onAddStudentClick }) {
     setSelectedStudentIds([]);
   };
 
+  // Bulk Delete Selected Students
+  const handleBulkDeleteStudents = async () => {
+    if (!window.confirm(`Are you sure you want to permanently delete all ${selectedStudentIds.length} selected student records? This action cannot be undone.`)) return;
+    
+    for (const id of selectedStudentIds) {
+      await deleteStudent(id);
+    }
+    setSelectedStudentIds([]);
+  };
+
   // Open Payment / Ledger Modal
   const handleOpenPaymentModal = (student) => {
     setPaymentModalStudent(student);
@@ -402,7 +412,7 @@ export default function StudentTable({ onAddStudentClick }) {
 
       {/* 2. BULK SELECTION ACTION BANNER */}
       {selectedStudentIds.length > 0 && (
-        <div className="bg-[#3B2314] text-white p-3 sm:p-4 rounded-2xl shadow-md flex flex-wrap items-center justify-between gap-3 animate-in fade-in text-xs font-sans">
+        <div className="bg-[#3B2314] text-white p-3 sm:p-4 rounded-2xl shadow-md flex flex-wrap items-center justify-between gap-2.5 animate-in fade-in text-xs font-sans">
           <div className="flex items-center gap-2">
             <span className="w-6 h-6 rounded-lg bg-[#D97B29] text-white flex items-center justify-center font-bold text-xs">
               {selectedStudentIds.length}
@@ -412,7 +422,7 @@ export default function StudentTable({ onAddStudentClick }) {
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => setIsBulkFeeModalOpen(true)}
               className="px-3 py-1.5 bg-[#D97B29] hover:bg-[#C4621C] text-white font-bold rounded-xl shadow-xs transition-colors cursor-pointer flex items-center gap-1"
@@ -439,8 +449,17 @@ export default function StudentTable({ onAddStudentClick }) {
             </button>
 
             <button
+              onClick={handleBulkDeleteStudents}
+              className="px-3 py-1.5 bg-red-700 hover:bg-red-800 text-white font-bold rounded-xl shadow-xs transition-colors cursor-pointer flex items-center gap-1"
+              title="Delete all selected students"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Delete ({selectedStudentIds.length})</span>
+            </button>
+
+            <button
               onClick={() => setSelectedStudentIds([])}
-              className="p-1.5 text-zinc-300 hover:text-white cursor-pointer"
+              className="p-1.5 text-zinc-300 hover:text-white cursor-pointer ml-auto sm:ml-0"
               title="Deselect All"
             >
               <X className="w-4 h-4" />
@@ -449,8 +468,189 @@ export default function StudentTable({ onAddStudentClick }) {
         </div>
       )}
 
-      {/* 3. EXCEL-STYLE MASTER SPREADSHEET TABLE */}
-      <div className="overflow-x-auto rounded-2xl border border-[#E5DAC6] bg-white shadow-xs">
+      {/* 3A. MOBILE-OPTIMIZED STUDENT CARDS VIEW (Clean & Touch-Friendly on Android / iOS) */}
+      <div className="block md:hidden space-y-3">
+        {filteredStudents.length === 0 ? (
+          <div className="p-8 text-center text-[#7A6A5C] text-xs bg-white rounded-2xl border border-[#E5DAC6]">
+            <Users className="w-8 h-8 mx-auto text-[#D97B29] mb-2 opacity-60" />
+            <p className="font-bold text-sm text-[#231A12] mb-1">No Students Found</p>
+            <p>Try clearing your search or register a new student.</p>
+          </div>
+        ) : (
+          filteredStudents.map((s, idx) => {
+            const b = calculateFeeBreakdown(s);
+            const isSelected = selectedStudentIds.includes(s.id);
+            const isPaid = b.dueAmount === 0;
+
+            return (
+              <div 
+                key={s.id}
+                className={`bg-white rounded-2xl border p-4 shadow-xs space-y-3 text-xs transition-all ${
+                  isSelected ? 'border-[#D97B29] bg-[#FFF9F2]' : 'border-[#E5DAC6]'
+                }`}
+              >
+                {/* Top Row: Select, Name, Roll No, School Badge */}
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2.5">
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => handleToggleSelectStudent(s.id)}
+                      className="rounded text-[#D97B29] focus:ring-[#D97B29] w-4 h-4 cursor-pointer"
+                    />
+                    <div>
+                      <h4 className="font-bold text-sm text-[#231A12] leading-tight">
+                        {s.studentName}
+                      </h4>
+                      <div className="text-[11px] text-[#7A6A5C] font-mono mt-0.5">
+                        #{idx + 1} • {s.rollNo || s.id} • {s.grade}
+                      </div>
+                    </div>
+                  </div>
+
+                  <span className="px-2 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-300 text-[10px] font-bold text-right truncate max-w-[130px]" title={s.schoolName}>
+                    {s.schoolName}
+                  </span>
+                </div>
+
+                {/* Details Grid */}
+                <div className="grid grid-cols-2 gap-2 text-[11px] bg-[#FAF7F0] p-2.5 rounded-xl border border-[#E5DAC6]/60">
+                  <div>
+                    <span className="text-[#7A6A5C] block text-[10px] uppercase font-bold">Parent</span>
+                    <span className="font-semibold text-[#231A12] truncate block">{s.parentName || 'Parent'}</span>
+                  </div>
+                  <div>
+                    <span className="text-[#7A6A5C] block text-[10px] uppercase font-bold">Mobile</span>
+                    <div className="flex items-center gap-1 font-mono font-bold text-[#231A12]">
+                      <span>{s.parentPhone}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleCopy(s.parentPhone, s.id)}
+                        className="text-[#7A6A5C] hover:text-[#231A12]"
+                        title="Copy Phone"
+                      >
+                        {copiedId === s.id ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col-span-2 flex items-center justify-between gap-1 border-t border-[#E5DAC6]/60 pt-1.5 mt-0.5">
+                    <div className="truncate text-[#231A12]">
+                      <span className="text-[#7A6A5C] text-[10px] uppercase font-bold mr-1">Stop:</span>
+                      <span>📍 {s.stopName || 'Designated Stop'}</span>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setQuickStopStudent(s);
+                        setNewStopName(s.stopName || '');
+                      }}
+                      className="p-1 text-[#7A6A5C] hover:text-[#D97B29] flex-shrink-0"
+                      title="Edit Stop"
+                    >
+                      <Edit3 className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Financial Breakdown Box */}
+                <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-[#E5DAC6] text-[11px] font-mono">
+                  <div>
+                    <div className="text-[10px] text-[#7A6A5C] font-sans">Total / Mo</div>
+                    <div className="font-bold text-[#231A12]">₹{b.totalAnnualFee.toLocaleString('en-IN')} <span className="text-[10px] font-normal text-[#7A6A5C]">(₹{b.monthlyFee}/mo)</span></div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-[10px] text-[#7A6A5C] font-sans">Paid / Due</div>
+                    <div className="font-bold">
+                      <span className="text-emerald-700">₹{b.paidAmount.toLocaleString('en-IN')}</span>
+                      {' / '}
+                      <span className={b.dueAmount > 0 ? 'text-red-600 font-bold' : 'text-emerald-700'}>
+                        {b.dueAmount > 0 ? `₹${b.dueAmount.toLocaleString('en-IN')}` : '₹0'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Phase Status Badges */}
+                <div className="flex flex-wrap items-center justify-between gap-1.5 text-[10px] font-bold">
+                  <div className="flex items-center gap-1">
+                    <span className={`px-2 py-0.5 rounded ${
+                      b.phase1Status === 'PAID' 
+                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' 
+                        : 'bg-amber-50 text-amber-900 border border-amber-300'
+                    }`}>
+                      P1: {b.phase1Status === 'PAID' ? '✓ Paid' : `Due ₹${b.phase1Due}`}
+                    </span>
+                    <span className={`px-2 py-0.5 rounded ${
+                      b.phase2Status === 'PAID' 
+                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' 
+                        : (b.phase2Status === 'PARTIAL' ? 'bg-amber-50 text-amber-900 border border-amber-300' : 'bg-red-50 text-red-800 border border-red-200')
+                    }`}>
+                      P2: {b.phase2Status === 'PAID' ? '✓ Paid' : (b.phase2Due > 0 ? `Due ₹${b.phase2Due}` : 'Pending')}
+                    </span>
+                  </div>
+
+                  <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase ${
+                    isPaid ? 'bg-emerald-100 text-emerald-900' : 'bg-amber-100 text-amber-900'
+                  }`}>
+                    {isPaid ? 'All Settled' : `Due: ₹${b.dueAmount}`}
+                  </span>
+                </div>
+
+                {/* Actions Toolbar on Mobile */}
+                <div className="flex items-center gap-1.5 pt-2 border-t border-[#E5DAC6]/60">
+                  <button
+                    onClick={() => handleOpenPaymentModal(s)}
+                    className="flex-1 py-2 px-3 rounded-xl bg-[#D97B29] hover:bg-[#C4621C] text-white text-xs font-bold shadow-2xs flex items-center justify-center gap-1 cursor-pointer"
+                  >
+                    <CheckCheck className="w-3.5 h-3.5" />
+                    <span>Approve ₹</span>
+                  </button>
+
+                  <a
+                    href={getWhatsAppLink(s)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="WhatsApp Parent"
+                    className="p-2 rounded-xl bg-white hover:bg-emerald-50 text-emerald-700 border border-[#E5DAC6] transition-colors flex items-center justify-center"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                  </a>
+
+                  <button
+                    onClick={() => setHistoryStudent(s)}
+                    title="History"
+                    className="p-2 rounded-xl bg-white hover:bg-[#FAF7F0] text-[#7A6A5C] hover:text-[#231A12] border border-[#E5DAC6] transition-colors cursor-pointer flex items-center justify-center"
+                  >
+                    <History className="w-4 h-4" />
+                  </button>
+
+                  <button
+                    onClick={() => setEditModalStudent(s)}
+                    title="Edit Student"
+                    className="p-2 rounded-xl bg-white hover:bg-[#FAF7F0] text-[#7A6A5C] hover:text-[#231A12] border border-[#E5DAC6] transition-colors cursor-pointer flex items-center justify-center"
+                  >
+                    <Edit3 className="w-4 h-4" />
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      if (window.confirm(`Are you sure you want to remove ${s.studentName}?`)) {
+                        deleteStudent(s.id);
+                      }
+                    }}
+                    title="Delete Record"
+                    className="p-2 rounded-xl bg-white hover:bg-red-50 text-red-600 hover:text-red-800 border border-[#E5DAC6] transition-colors cursor-pointer flex items-center justify-center"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      {/* 3B. DESKTOP/TABLET EXCEL-STYLE MASTER SPREADSHEET TABLE */}
+      <div className="hidden md:block overflow-x-auto rounded-2xl border border-[#E5DAC6] bg-white shadow-xs">
         <table className="w-full text-left text-xs text-[#231A12] border-collapse">
           <thead className="bg-[#FAF7F0] text-[#7A6A5C] border-b border-[#E5DAC6] font-bold uppercase text-[10px] tracking-wider select-none">
             <tr>
