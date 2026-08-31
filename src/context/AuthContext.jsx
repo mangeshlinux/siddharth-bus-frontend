@@ -199,12 +199,6 @@ export function AuthProvider({ children }) {
           (s.id === studentId || s._id === studentId) ? result.student : s
         ));
       }
-      // Refresh notices (payment creates an auto-notice)
-      try {
-        const updatedNotices = await noticesAPI.getAll();
-        setNotices(updatedNotices);
-      } catch { /* ignore */ }
-
       return { receiptNo: result.receiptNo, date: result.date, amount: result.amount };
     } catch (error) {
       console.error('Record payment failed:', error);

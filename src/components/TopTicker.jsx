@@ -6,7 +6,9 @@ export default function TopTicker() {
   const { notices } = useAuth();
   const [selectedNotice, setSelectedNotice] = useState(null);
 
-  const activeNotices = notices.slice(0, 5);
+  const activeNotices = notices
+    .filter(n => !n.isPaymentReceipt && n.type !== 'PAYMENT_CONFIRMATION' && n.target !== 'Individual Parent')
+    .slice(0, 5);
 
   return (
     <>
