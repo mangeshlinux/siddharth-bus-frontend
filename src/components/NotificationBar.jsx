@@ -23,6 +23,14 @@ export default function NotificationBar() {
 
   const activeNotices = notices || [];
 
+  // When notices array updates (e.g. fresh broadcast), bring it to front and open
+  useEffect(() => {
+    if (notices && notices.length > 0) {
+      setCurrentIndex(0);
+      setIsOpen(true);
+    }
+  }, [notices?.length]);
+
   // Auto-cycle through notifications every 6 seconds (pauses on hover)
   useEffect(() => {
     if (!isOpen || activeNotices.length <= 1 || isHovered) {

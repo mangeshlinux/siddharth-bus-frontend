@@ -58,13 +58,13 @@ export default function OwnerPortal_x9f2() {
   const totalPendingDues = students.reduce((acc, s) => acc + (s.feeDetails?.dueAmount ?? Math.max(0, (s.feeDetails?.totalAnnualFee || 30000) - (s.feeDetails?.paidAmount || 0))), 0);
   const totalAnnualValue = totalCollectedFees + totalPendingDues;
   
-  // 10-Month Academic Session Standard in Maharashtra
-  const totalMonthlyContract = totalStudents > 0 ? Math.round(totalAnnualValue / 10) : 0;
-  const monthlyAvgCollected = totalStudents > 0 ? Math.round(totalCollectedFees / 10) : 0;
-  const monthlyPendingDue = totalStudents > 0 ? Math.round(totalPendingDues / 10) : 0;
+  // 11-Month Academic Session Standard (June to April)
+  const totalMonthlyContract = totalStudents > 0 ? Math.round(totalAnnualValue / 11) : 0;
+  const monthlyAvgCollected = totalStudents > 0 ? Math.round(totalCollectedFees / 11) : 0;
+  const monthlyPendingDue = totalStudents > 0 ? Math.round(totalPendingDues / 11) : 0;
 
   const collectionPercentage = totalAnnualValue > 0 ? Math.round((totalCollectedFees / totalAnnualValue) * 100) : 100;
-  const pendingStudentsCount = students.filter(s => (s.feeDetails?.dueAmount ?? Math.max(0, (s.feeDetails?.totalAnnualFee || 30000) - (s.feeDetails?.paidAmount || 0))) > 0).length;
+  const pendingStudentsCount = students.filter(s => (s.feeDetails?.dueAmount ?? Math.max(0, (s.feeDetails?.totalAnnualFee || 33000) - (s.feeDetails?.paidAmount || 0))) > 0).length;
 
   const formatCurrency = (val) => {
     return new Intl.NumberFormat('en-IN', {
@@ -76,40 +76,22 @@ export default function OwnerPortal_x9f2() {
 
   const exportStudentsToExcel = () => {
     const exportData = students.map((s, index) => {
-      const totalFee = s.feeDetails?.totalAnnualFee || 30000;
-      const paid = s.feeDetails?.paidAmount || 0;
-      const due = s.feeDetails?.dueAmount ?? Math.max(0, totalFee - paid);
-      const monthlyFee = Math.round(totalFee / 10);
-      const monthlyDue = Math.round(due / 10);
-      const p1Target = s.feeDetails?.phase1Amount ? Number(s.feeDetails.phase1Amount) : Math.round(totalFee / 2);
-      const p1Paid = Math.min(paid, p1Target);
-      const p1Status = p1Paid >= p1Target ? "PAID" : (p1Paid > 0 ? "PARTIAL" : "DUE");
-      const p2Target = totalFee - p1Target;
-      const p2Paid = Math.max(0, paid - p1Target);
-      const p2Due = Math.max(0, p2Target - p2Paid);
-      const p2Status = p2Due === 0 ? "PAID" : (p2Paid > 0 ? "PARTIAL" : "DUE");
+      const b = calculateFeeBreakdown(s);
 
       return {
         "Sr. No": index + 1,
-        "Student ID": s.rollNo || s.id,
         "Student Name": s.studentName,
         "Linked Parent Phone": s.parentPhone,
         "Parent Name": s.parentName,
         "School / Institute": s.schoolName,
-        "Class / Grade": s.grade,
         "Pickup Stop": s.stopName,
         "Pickup Time": s.pickupTime || "07:15 AM",
-        "Monthly Fee (INR)": monthlyFee,
-        "Total Yearly Fee (INR)": totalFee,
-        "Approved Paid (INR)": paid,
-        "Phase 1 Target (INR)": p1Target,
-        "Phase 1 Status": p1Status,
-        "Phase 2 Target (INR)": p2Target,
-        "Phase 2 Due (INR)": p2Due,
-        "Phase 2 Status": p2Status,
-        "Monthly Due (INR)": monthlyDue,
-        "Total Balance Due (INR)": due,
-        "Payment Status": due === 0 ? "PAID" : "DUE",
+        "Monthly Fee (INR)": b.monthlyFee,
+        "Yearly Total Fee (INR)": b.totalAnnualFee,
+        "Approved Paid (INR)": b.paidAmount,
+        "Balance Due (INR)": b.dueAmount,
+        "Cleared Months (Out of 11)": `${b.clearedMonthsCount}/11`,
+        "Payment Status": b.dueAmount === 0 ? "PAID" : "DUE",
         "Last Payment Date": s.feeDetails?.lastPaymentDate || "N/A",
         "Last Receipt No": s.feeDetails?.lastReceiptNo || "N/A"
       };
@@ -195,26 +177,6 @@ export default function OwnerPortal_x9f2() {
             >
               <Download className="w-3.5 h-3.5 text-[#D97B29]" />
               <span>Export Sheet</span>
-            </button>
-
-            <button
-              onClick={() => setIsNotifModalOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-[#FAF7F0] text-[#7A6A5C] hover:text-[#231A12] border border-[#E5DAC6] text-xs font-semibold transition-colors cursor-pointer shadow-2xs"
-            >
-              <Radio className="w-3.5 h-3.5 text-[#D97B29]" />
-              <span>Broadcast Notice</span>
-            </button>
-
-            <button
-              onClick={() => {
-                if (window.confirm("Reset all student records back to initial mock dataset?")) {
-                  resetDemoData();
-                }
-              }}
-              className="p-2 rounded-xl bg-white hover:bg-red-50 text-zinc-400 hover:text-red-700 border border-[#E5DAC6] transition-colors cursor-pointer"
-              title="Reset Demo Data"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
             </button>
           </div>
 
@@ -302,7 +264,7 @@ export default function OwnerPortal_x9f2() {
             }`}
           >
             <Radio className="w-3.5 h-3.5 text-[#D97B29]" />
-            <span>Broadcast &amp; Notice Center ({notices.length})</span>
+            <span>Announcements &amp; Notices ({notices.length})</span>
           </button>
         </div>
 
@@ -311,11 +273,11 @@ export default function OwnerPortal_x9f2() {
           <StudentTable onAddStudentClick={() => setIsAddStudentOpen(true)} />
         )}
 
-        {/* 5. TAB 2: PROFESSIONAL BROADCAST DISPATCH CENTER */}
+        {/* 5. TAB 2: CLEAN PARENT ANNOUNCEMENTS & NOTICE CENTER */}
         {activeTab === 'NOTICES' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 text-left">
             
-            {/* Left: Quick Dispatch Composer */}
+            {/* Left: Create New Announcement */}
             <div className="lg:col-span-5 bg-white border border-[#E5DAC6] rounded-2xl p-5 shadow-xs space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-[#F5E8D3]">
                 <div className="flex items-center gap-2.5">
@@ -324,37 +286,34 @@ export default function OwnerPortal_x9f2() {
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-[#231A12]">
-                      Quick Broadcast Composer
+                      New Announcement
                     </h3>
                     <p className="text-[11px] text-[#7A6A5C]">
-                      Instantly publish announcements
+                      Broadcast live updates to website ticker &amp; parent dashboards
                     </p>
                   </div>
                 </div>
-
-                <button
-                  onClick={() => setIsNotifModalOpen(true)}
-                  className="px-2.5 py-1 bg-[#FAF7F0] hover:bg-white border border-[#E5DAC6] rounded-lg text-[11px] font-bold text-[#D97B29] transition-colors cursor-pointer flex items-center gap-1"
-                >
-                  <Sparkles className="w-3 h-3" />
-                  <span>Templates</span>
-                </button>
               </div>
 
-              <form onSubmit={handleQuickPublish} className="space-y-3 text-xs">
+              {/* Form */}
+              <form onSubmit={handleQuickPublish} className="space-y-3.5 text-xs">
                 <div>
                   <label className="block font-bold text-[#231A12] uppercase text-[10px] mb-1">
-                    Audience
+                    Target Parent Group / Audience
                   </label>
                   <select
                     value={quickTarget}
                     onChange={(e) => setQuickTarget(e.target.value)}
-                    className="w-full bg-[#FAF7F0] border border-[#E5DAC6] rounded-xl px-3 py-1.5 text-xs font-semibold text-[#231A12] outline-none"
+                    className="w-full bg-[#FAF7F0] border border-[#E5DAC6] rounded-xl px-3 py-2 text-xs font-bold text-[#231A12] outline-none"
                   >
-                    <option value="All Parents">All Enrolled Parents (Universal)</option>
-                    {schools.map(s => (
-                      <option key={s.id} value={`${s.name} Parents`}>Only {s.name} Parents</option>
-                    ))}
+                    <option value="All Parents">👥 All Enrolled Parents (Universal)</option>
+                    <option value="Parents with Pending / Due Fees">⚠️ Parents with Pending / Due Fees Only</option>
+                    <option value="Shree Chatrapati Shivaji Maharaj Vidhaylay Makhamalabad. Parents">🏫 Shree Chatrapati Shivaji Maharaj Vidhaylay Makhamalabad. Only</option>
+                    <option value="New Grace Academy, Akta Nagar,Borgad Nashik Parents">🏫 New Grace Academy, Akta Nagar,Borgad Nashik Only</option>
+                    <option value="Kaka Saheb Deodhar English Medium School, Reliance Pump Dindori Road.Nashik Parents">🏫 Kaka Saheb Deodhar English Medium School, Reliance Pump Dindori Road.Nashik Only</option>
+                    <option value="Route 1 (Borgad / Makhamalabad) Parents">🚌 Route 1 (Borgad / Makhamalabad) Parents Only</option>
+                    <option value="Route 2 (Adarsh / Vivekanand) Parents">🚌 Route 2 (Adarsh / Vivekanand) Parents Only</option>
+                    <option value="Route 3 (Dindori Road / Borgad) Parents">🚌 Route 3 (Dindori Road / Borgad) Parents Only</option>
                   </select>
                 </div>
 
@@ -365,7 +324,7 @@ export default function OwnerPortal_x9f2() {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Bus #1 10-Min Traffic Delay"
+                    placeholder="e.g. Tomorrow School Holiday Notice"
                     value={quickTitle}
                     onChange={(e) => setQuickTitle(e.target.value)}
                     className="w-full bg-[#FAF7F0] border border-[#E5DAC6] rounded-xl px-3 py-2 text-xs font-bold text-[#231A12] focus:bg-white focus:border-[#D97B29] outline-none"
@@ -378,8 +337,8 @@ export default function OwnerPortal_x9f2() {
                   </label>
                   <textarea
                     required
-                    rows={3}
-                    placeholder="Enter message for parents..."
+                    rows={4}
+                    placeholder="Type announcement message for parents..."
                     value={quickBody}
                     onChange={(e) => setQuickBody(e.target.value)}
                     className="w-full bg-[#FAF7F0] border border-[#E5DAC6] rounded-xl p-2.5 text-xs text-[#231A12] focus:bg-white focus:border-[#D97B29] outline-none leading-relaxed"
@@ -396,58 +355,71 @@ export default function OwnerPortal_x9f2() {
                     />
                     <span>Mark as Urgent Alert</span>
                   </label>
+                </div>
 
+                <div className="pt-2 flex flex-col sm:flex-row items-center gap-2">
                   <button
                     type="submit"
                     disabled={quickPublishing || !quickTitle.trim() || !quickBody.trim()}
-                    className="px-4 py-2 bg-[#D97B29] hover:bg-[#C4621C] text-white font-bold text-xs rounded-xl shadow-xs transition-colors cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+                    className="w-full sm:flex-1 py-2.5 bg-[#D97B29] hover:bg-[#C4621C] text-white font-bold text-xs rounded-xl shadow-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-50"
                   >
-                    <Send className="w-3 h-3" />
-                    <span>{quickPublishing ? 'Publishing...' : 'Publish'}</span>
+                    <Send className="w-3.5 h-3.5" />
+                    <span>{quickPublishing ? 'Publishing...' : 'Publish Announcement'}</span>
                   </button>
+
+                  {/* WhatsApp 1-Click Group Share */}
+                  {quickTitle && quickBody && (
+                    <a
+                      href={`https://wa.me/?text=${encodeURIComponent(`📢 *SIDDHARTH SCHOOL BUS & TRAVELS (NASHIK)*\n\n📌 *${quickTitle.toUpperCase()}*\n🎯 *Audience:* ${quickTarget}\n\n${quickBody}\n\n📞 Helpline: +91 84463 91127\n👤 Mr. Siddharth Kailas Shardul`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition-colors cursor-pointer inline-flex items-center justify-center gap-1.5"
+                      title="Share this announcement directly to parent WhatsApp group"
+                    >
+                      <span>Share to WhatsApp</span>
+                    </a>
+                  )}
                 </div>
               </form>
             </div>
 
-            {/* Right: Published Notices Log */}
+            {/* Right: Published Active Notices Board */}
             <div className="lg:col-span-7 bg-white border border-[#E5DAC6] rounded-2xl p-5 shadow-xs space-y-3.5">
               <div className="flex items-center justify-between pb-3 border-b border-[#F5E8D3]">
                 <div>
                   <h3 className="text-sm font-bold text-[#231A12]">
-                    Active Announcements &amp; Broadcast History ({notices.length})
+                    Active Announcements ({notices.length})
                   </h3>
                   <p className="text-[11px] text-[#7A6A5C]">
-                    Displayed live on the top header ticker &amp; parent dashboards
+                    Displayed live on website header ticker &amp; parent dashboards
                   </p>
                 </div>
 
                 {notices.length > 0 && (
                   <button
-                    onClick={() => {
-                      if (window.confirm("Clear all active announcements from the board?")) {
-                        clearAllNotices();
-                      }
-                    }}
-                    className="px-2.5 py-1 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition-colors cursor-pointer"
+                    type="button"
+                    onClick={() => clearAllNotices()}
+                    className="px-3 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition-colors cursor-pointer active:scale-95"
+                    title="Clear all active announcements"
                   >
                     Clear All
                   </button>
                 )}
               </div>
 
-              <div className="space-y-2.5 max-h-[480px] overflow-y-auto pr-1">
+              <div className="space-y-2.5 max-h-[500px] overflow-y-auto pr-1">
                 {notices.length === 0 ? (
                   <div className="p-8 text-center text-[#7A6A5C] text-xs bg-[#FAF7F0] rounded-xl border border-[#E5DAC6]">
-                    <p className="font-bold text-sm text-[#231A12] mb-1">No Active Notices</p>
-                    <p>Use the Quick Composer on the left or click <strong>Broadcast Notice</strong> to publish an announcement.</p>
+                    <p className="font-bold text-sm text-[#231A12] mb-1">No Active Announcements</p>
+                    <p>Create and publish a new announcement on the left to display on the top ticker.</p>
                   </div>
                 ) : (
                   notices.map((n) => (
                     <div 
-                      key={n.id} 
-                      className="p-3.5 rounded-xl bg-[#FAF7F0] border border-[#E5DAC6] text-xs space-y-1.5 flex items-start justify-between gap-3 hover:bg-white transition-colors"
+                      key={n.id || n._id} 
+                      className="p-3.5 rounded-xl bg-[#FAF7F0] border border-[#E5DAC6] text-xs space-y-2 flex items-start justify-between gap-3 hover:bg-white transition-colors"
                     >
-                      <div className="space-y-1 flex-1">
+                      <div className="space-y-1.5 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <span className="font-bold text-[#231A12] text-xs sm:text-sm">{n.title}</span>
                           {n.urgent && (
@@ -455,24 +427,28 @@ export default function OwnerPortal_x9f2() {
                               URGENT
                             </span>
                           )}
-                          {n.target && (
-                            <span className="bg-amber-100/70 text-amber-900 text-[9px] font-bold px-1.5 py-0.5 rounded">
-                              {n.target}
-                            </span>
-                          )}
                           <span className="text-[10px] text-[#7A6A5C] font-mono">• {n.date} {n.time ? `(${n.time})` : ''}</span>
                         </div>
                         <p className="text-[#7A6A5C] leading-relaxed whitespace-pre-wrap text-[11px]">{n.content}</p>
+
+                        {/* Quick WhatsApp Forward for Existing Notice */}
+                        <div className="pt-1">
+                          <a
+                            href={`https://wa.me/?text=${encodeURIComponent(`📢 *SIDDHARTH SCHOOL BUS & TRAVELS (NASHIK)*\n\n📌 *${n.title.toUpperCase()}*\n\n${n.content}\n\n📞 Helpline: +91 84463 91127\n👤 Mr. Siddharth Kailas Shardul`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2 py-0.5 rounded-md transition-colors"
+                          >
+                            <span>Share to WhatsApp Group</span>
+                          </a>
+                        </div>
                       </div>
 
                       <button
-                        onClick={() => {
-                          if (window.confirm(`Delete notice "${n.title}"?`)) {
-                            deleteNotice(n.id);
-                          }
-                        }}
+                        type="button"
+                        onClick={() => deleteNotice(n.id || n._id)}
                         title="Delete notice"
-                        className="p-1.5 rounded-lg bg-white hover:bg-red-50 text-red-600 hover:text-red-800 border border-red-200 shadow-2xs transition-colors cursor-pointer flex-shrink-0"
+                        className="p-1.5 rounded-lg bg-white hover:bg-red-50 text-red-600 hover:text-red-800 border border-red-200 shadow-2xs transition-colors cursor-pointer flex-shrink-0 mt-0.5 active:scale-95"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -481,7 +457,6 @@ export default function OwnerPortal_x9f2() {
                 )}
               </div>
             </div>
-
           </div>
         )}
 

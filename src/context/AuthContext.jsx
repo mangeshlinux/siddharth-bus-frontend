@@ -8,41 +8,30 @@ import {
 
 export function calculateFeeBreakdown(student) {
   const fee = student?.feeDetails || {};
-  const totalAnnualFee = Number(fee.totalAnnualFee || 30000);
+  const totalAnnualFee = Number(fee.totalAnnualFee || 33000);
   const paidAmount = Number(fee.paidAmount || 0);
   const dueAmount = fee.dueAmount !== undefined ? Number(fee.dueAmount) : Math.max(0, totalAnnualFee - paidAmount);
   
-  // 10-month Academic Session standard
-  const monthlyFee = Math.round(totalAnnualFee / 10);
-  const monthlyDue = Math.round(dueAmount / 10);
+  // 11-month Academic Session standard (June to April)
+  const monthlyFee = fee.monthlyFee ? Number(fee.monthlyFee) : Math.round(totalAnnualFee / 11);
+  const monthlyDue = Math.round(dueAmount / 11);
   
-  // Phase 1 (50%) and Phase 2 (50%)
-  const phase1Target = fee.phase1Amount ? Number(fee.phase1Amount) : Math.round(totalAnnualFee / 2);
-  const phase2Target = totalAnnualFee - phase1Target;
-
-  const phase1Paid = Math.min(paidAmount, phase1Target);
-  const phase1Due = Math.max(0, phase1Target - phase1Paid);
-  const phase1Status = phase1Due === 0 ? 'PAID' : (phase1Paid > 0 ? 'PARTIAL' : 'DUE');
-
-  const phase2Paid = Math.max(0, paidAmount - phase1Target);
-  const phase2Due = Math.max(0, phase2Target - phase2Paid);
-  const phase2Status = phase2Due === 0 ? 'PAID' : (phase2Paid > 0 ? 'PARTIAL' : (phase1Status === 'PAID' ? 'DUE' : 'UPCOMING'));
-
-  // 10 Academic Months: Jun, Jul, Aug, Sep, Oct (Phase 1) | Nov, Dec, Jan, Feb, Mar (Phase 2)
+  // 11 Academic Months: Jun, Jul, Aug, Sep, Oct, Nov, Dec, Jan, Feb, Mar, Apr
   const academicMonths = [
-    { month: 'Jun', fullName: 'June 2026', phase: 1, targetAmount: monthlyFee },
-    { month: 'Jul', fullName: 'July 2026', phase: 1, targetAmount: monthlyFee },
-    { month: 'Aug', fullName: 'August 2026', phase: 1, targetAmount: monthlyFee },
-    { month: 'Sep', fullName: 'September 2026', phase: 1, targetAmount: monthlyFee },
-    { month: 'Oct', fullName: 'October 2026', phase: 1, targetAmount: monthlyFee },
-    { month: 'Nov', fullName: 'November 2026', phase: 2, targetAmount: monthlyFee },
-    { month: 'Dec', fullName: 'December 2026', phase: 2, targetAmount: monthlyFee },
-    { month: 'Jan', fullName: 'January 2027', phase: 2, targetAmount: monthlyFee },
-    { month: 'Feb', fullName: 'February 2027', phase: 2, targetAmount: monthlyFee },
-    { month: 'Mar', fullName: 'March 2027', phase: 2, targetAmount: monthlyFee }
+    { month: 'Jun', fullName: 'June 2026', monthIndex: 1, targetAmount: monthlyFee },
+    { month: 'Jul', fullName: 'July 2026', monthIndex: 2, targetAmount: monthlyFee },
+    { month: 'Aug', fullName: 'August 2026', monthIndex: 3, targetAmount: monthlyFee },
+    { month: 'Sep', fullName: 'September 2026', monthIndex: 4, targetAmount: monthlyFee },
+    { month: 'Oct', fullName: 'October 2026', monthIndex: 5, targetAmount: monthlyFee },
+    { month: 'Nov', fullName: 'November 2026', monthIndex: 6, targetAmount: monthlyFee },
+    { month: 'Dec', fullName: 'December 2026', monthIndex: 7, targetAmount: monthlyFee },
+    { month: 'Jan', fullName: 'January 2027', monthIndex: 8, targetAmount: monthlyFee },
+    { month: 'Feb', fullName: 'February 2027', monthIndex: 9, targetAmount: monthlyFee },
+    { month: 'Mar', fullName: 'March 2027', monthIndex: 10, targetAmount: monthlyFee },
+    { month: 'Apr', fullName: 'April 2027', monthIndex: 11, targetAmount: monthlyFee }
   ];
 
-  const clearedMonthsCount = dueAmount === 0 ? 10 : Math.min(10, Math.floor((paidAmount / (monthlyFee || 1)) + 0.05));
+  const clearedMonthsCount = dueAmount === 0 ? 11 : Math.min(11, Math.floor((paidAmount / (monthlyFee || 1)) + 0.05));
 
   const monthsList = academicMonths.map((m, idx) => ({
     ...m,
@@ -57,17 +46,9 @@ export function calculateFeeBreakdown(student) {
     monthlyFee,
     monthlyDue,
     status: dueAmount === 0 ? 'PAID' : (paidAmount > 0 ? 'PARTIAL' : 'DUE'),
-    phase1Target,
-    phase1Paid,
-    phase1Due,
-    phase1Status,
-    phase2Target,
-    phase2Paid,
-    phase2Due,
-    phase2Status,
     clearedMonthsCount,
     monthsList,
-    nextDueDate: fee.nextDueDate || (phase2Due > 0 ? "2026-10-15 (Phase 2 Due)" : "Fully Paid for 2026-27"),
+    nextDueDate: fee.nextDueDate || (dueAmount > 0 ? "Next Month 10th" : "Fully Paid (June–April)"),
     lastPaymentDate: fee.lastPaymentDate,
     lastReceiptNo: fee.lastReceiptNo,
     paymentMode: fee.paymentMode,
@@ -270,31 +251,46 @@ export function AuthProvider({ children }) {
 
   // ─── Notice Broadcasting ───
   const broadcastNotice = useCallback(async (noticeData) => {
+    const localNotice = {
+      id: `NOT-${Date.now()}`,
+      _id: `NOT-${Date.now()}`,
+      title: noticeData.title,
+      content: noticeData.content,
+      target: noticeData.target || 'All Parents',
+      type: noticeData.type || (noticeData.urgent ? 'URGENT' : 'INFO'),
+      date: noticeData.date || new Date().toISOString().split('T')[0],
+      time: noticeData.time || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      urgent: !!noticeData.urgent,
+      sentVia: noticeData.sentVia || ['In-App Broadcast']
+    };
+
     try {
       const newNotice = await noticesAPI.broadcast(noticeData);
-      setNotices(prev => [newNotice, ...prev]);
-      return newNotice;
+      const savedNotice = newNotice || localNotice;
+      setNotices(prev => [savedNotice, ...prev.filter(n => n.id !== savedNotice.id && n._id !== savedNotice._id)]);
+      return savedNotice;
     } catch (error) {
-      console.error('Broadcast notice failed:', error);
-      return null;
+      console.warn('Backend broadcast notice unavailable, publishing locally:', error);
+      setNotices(prev => [localNotice, ...prev]);
+      return localNotice;
     }
   }, []);
 
   const deleteNotice = useCallback(async (id) => {
+    setNotices(prev => prev.filter(n => n.id !== id && n._id !== id));
     try {
       await noticesAPI.delete(id);
-      setNotices(prev => prev.filter(n => n.id !== id && n._id !== id));
     } catch (error) {
-      console.error('Delete notice failed:', error);
+      console.warn('Backend delete notice failed or offline mode:', error);
     }
   }, []);
 
   const clearAllNotices = useCallback(async () => {
+    setNotices([]);
     try {
       await noticesAPI.clearAll();
-      setNotices([]);
     } catch (error) {
-      console.error('Clear notices failed:', error);
+      console.warn('Backend clear all notices failed or offline mode:', error);
     }
   }, []);
 

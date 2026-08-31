@@ -49,7 +49,7 @@ export default function TopTicker() {
           {/* Direct Emergency Contact Pill */}
           <div className="hidden md:flex items-center gap-2 px-3 bg-white text-slate-700 flex-shrink-0 border-l border-amber-200/80">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-            <span className="text-[11px] font-medium">Control Room: <strong className="text-amber-700 font-mono font-bold">8767948553</strong></span>
+            <span className="text-[11px] font-medium">Control Room: <strong className="text-amber-700 font-mono font-bold">8446391127</strong></span>
           </div>
         </div>
       </div>

@@ -95,7 +95,6 @@ export default function LoginModal({ isOpen, onClose }) {
             </div>
             <p className="text-[11px] text-[#7A6A5C] mt-1.5">
               Enter the mobile number registered by the bus operator.
-              {' '}<button type="button" onClick={() => setPhone('9876543210')} className="text-[#D97B29] font-mono font-bold hover:underline">Try: 9876543210</button>
             </p>
           </div>
 

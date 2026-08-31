@@ -17,43 +17,46 @@ export default function Navbar() {
 
   const handleCopyUpi = (e) => {
     e.stopPropagation();
-    navigator.clipboard.writeText('8767948553@upi');
+    navigator.clipboard.writeText('8446391127@upi');
     setCopiedUpi(true);
     setTimeout(() => setCopiedUpi(false), 2000);
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[#3B2314] border-b border-[#B08D57]/60 shadow-lg transition-all">
+    <header className="sticky top-0 z-40 bg-[#3B2314] border-b border-[#B08D57]/60 shadow-md transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between py-2 sm:py-2.5 min-h-[74px] sm:min-h-[82px]">
           
-          {/* Brand Logo & Name (Horizontal Layout) */}
-          <Link to="/" className="flex items-center gap-2.5 sm:gap-4 group py-2">
+          {/* Brand Logo & Name (Balanced, Clean Layout) */}
+          <Link to="/" className="flex items-center gap-3 sm:gap-3.5 group py-1">
             <Logo size="md" />
             <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3 text-left">
-              <span className="text-xl sm:text-3xl font-black text-white tracking-tight font-heading group-hover:text-[#D97B29] transition-colors leading-none">
+              <span className="text-xl sm:text-2xl font-black text-white tracking-tight font-heading group-hover:text-[#D97B29] transition-colors leading-none">
                 SIDDHARTH
               </span>
-              <span className="hidden sm:inline-block h-5 w-[2px] bg-[#B08D57]/60 rounded-full" />
-              <span className="text-[10px] sm:text-sm font-bold text-[#D97B29] tracking-wider uppercase sm:mt-0.5 leading-tight">
-                School Bus &amp; Travels • Nashik
-              </span>
+              <span className="hidden sm:inline-block h-5 w-[1.5px] bg-[#B08D57]/60 rounded-full" />
+              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-1.5">
+                <span className="text-xs sm:text-sm font-bold text-[#E5A853] tracking-wider uppercase leading-tight group-hover:text-[#F3B367] transition-colors">
+                  School Bus &amp; Travels
+                </span>
+                <span className="hidden sm:inline text-xs text-[#FBF3E7]/60">• Nashik</span>
+              </div>
             </div>
           </Link>
 
           {/* Right Header Actions: Integrated UPI Pay Button & Logout */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="flex items-center gap-2 sm:gap-2.5">
             <button
               type="button"
               onClick={() => setIsQrModalOpen(true)}
-              className="flex items-center gap-1 sm:gap-2 p-1.5 sm:px-3.5 sm:py-2 bg-[#2A1810] hover:bg-[#20110A] text-white border border-[#B08D57]/50 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer group flex-shrink-0"
-              title="Scan UPI QR Code to Pay (8767948553@upi)"
+              className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-[#2A1810] hover:bg-[#20110A] text-white border border-[#B08D57]/60 hover:border-[#D97B29] rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer group flex-shrink-0"
+              title="Scan UPI QR Code to Pay (8446391127@upi)"
             >
               <QrCode className="w-4 h-4 text-[#D97B29] group-hover:scale-110 transition-transform flex-shrink-0" />
               <span className="hidden md:inline text-zinc-300">UPI Pay:</span>
-              <span className="font-mono text-[#D97B29] text-[10px] sm:text-xs">
+              <span className="font-mono text-[#E5A853] text-xs font-black">
                 <span className="inline sm:hidden">UPI</span>
-                <span className="hidden sm:inline">8767948553@upi</span>
+                <span className="hidden sm:inline">8446391127@upi</span>
               </span>
             </button>
 
@@ -61,7 +64,7 @@ export default function Navbar() {
               <button
                 onClick={handleLogout}
                 title="Logout"
-                className="hidden sm:flex items-center gap-1 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-[#2A1810] hover:bg-red-800 text-[#FBF3E7] hover:text-white border border-[#B08D57]/40 text-xs font-bold transition-colors cursor-pointer"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-[#2A1810] hover:bg-red-800 text-[#FBF3E7] hover:text-white border border-[#B08D57]/40 text-xs font-bold transition-colors cursor-pointer shadow-xs"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span>Logout</span>
@@ -100,7 +103,7 @@ export default function Navbar() {
                   Siddharth School Bus &amp; Travels
                 </h3>
                 <p className="text-xs text-zinc-500">
-                  Proprietor: Mr. Siddharth Shardul • Nashik
+                  Proprietor: Mr. Siddharth Kailas Shardul • Nashik
                 </p>
               </div>
             </div>
@@ -132,7 +135,7 @@ export default function Navbar() {
               <div className="flex items-center justify-between">
                 <span className="text-zinc-500 font-medium">UPI ID:</span>
                 <div className="flex items-center gap-2">
-                  <span className="font-mono font-bold text-zinc-900">8767948553@upi</span>
+                  <span className="font-mono font-bold text-zinc-900">8446391127@upi</span>
                   <button
                     type="button"
                     onClick={handleCopyUpi}
@@ -146,13 +149,13 @@ export default function Navbar() {
 
               <div className="flex items-center justify-between border-t border-zinc-200/60 pt-1.5">
                 <span className="text-zinc-500 font-medium">Payee Name:</span>
-                <span className="font-semibold text-zinc-900">Mr. Siddharth Shardul</span>
+                <span className="font-semibold text-zinc-900">Mr. Siddharth Kailas Shardul</span>
               </div>
 
               <div className="flex items-center justify-between border-t border-zinc-200/60 pt-1.5">
                 <span className="text-zinc-500 font-medium">Office Helpline:</span>
-                <a href="tel:8767948553" className="font-mono font-bold text-amber-700 hover:underline">
-                  +91 8767948553
+                <a href="tel:8446391127" className="font-mono font-bold text-amber-700 hover:underline">
+                  +91 84463 91127
                 </a>
               </div>
             </div>

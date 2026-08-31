@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Mail, MapPin, ArrowUp, Lock } from 'lucide-react';
+import { Phone, Mail, ArrowUp, Lock } from 'lucide-react';
 import Logo from './Logo';
 
 export default function Footer({ onOpenOwnerLogin }) {
@@ -27,35 +27,53 @@ export default function Footer({ onOpenOwnerLogin }) {
               </div>
             </div>
             <p className="text-xs text-[#FBF3E7]/80 leading-relaxed">
-              Safe, comfortable, and reliable daily school transport across Nashik since 2017. Managed by Mr. Siddharth Shardul.
+              Safe, comfortable, and reliable daily school transport across Nashik since 2017. Managed by Mr. Siddharth Kailas Shardul.
             </p>
           </div>
 
           {/* Col 2: Direct Contact */}
           <div className="space-y-2.5 text-xs">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-2">
-              Nashik Office &amp; Helpline
+              Contact
             </h4>
             <div className="flex items-center gap-2">
               <Phone className="w-3.5 h-3.5 text-[#D97B29] flex-shrink-0" />
-              <span>Call Helpline: <a href="tel:8767948553" className="font-mono font-bold text-white hover:text-[#D97B29] transition-colors">8767948553</a></span>
+              <span>Mobile No.: <a href="tel:8446391127" className="font-mono font-bold text-white hover:text-[#D97B29] transition-colors">8446391127</a></span>
             </div>
             <div className="flex items-center gap-2">
               <Mail className="w-3.5 h-3.5 text-[#D97B29] flex-shrink-0" />
-              <span>Email: <a href="mailto:siddharth.travels.nashik@gmail.com" className="text-[#FBF3E7]/90 hover:text-[#D97B29] transition-colors">siddharth.travels.nashik@gmail.com</a></span>
+              <span>Email: <a href="mailto:siddharthshardul96@gmail.com" className="text-[#FBF3E7]/90 hover:text-[#D97B29] transition-colors">siddharthshardul96@gmail.com</a></span>
             </div>
-            <div className="flex items-start gap-2 text-[#FBF3E7]/80">
-              <MapPin className="w-3.5 h-3.5 text-[#D97B29] flex-shrink-0 mt-0.5" />
-              <span>Shop #4, Shree Samarth Plaza, Near College Road, Nashik - 422005</span>
+            <div className="flex items-center gap-2">
+              <svg className="w-3.5 h-3.5 text-[#D97B29] flex-shrink-0 fill-none stroke-current stroke-2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+              <span>Instagram: <a href="https://www.instagram.com/siddhshardul2?igsi=MWRnaTM5aWF0c25hdg==" target="_blank" rel="noopener noreferrer" className="text-[#FBF3E7]/90 hover:text-[#D97B29] transition-colors font-semibold">@siddhshardul2</a></span>
             </div>
           </div>
 
         </div>
 
-        {/* Bottom Bar: Copyright, Back to Top, and Owner Login */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#FBF3E7]/70">
-          <div>
-            © {new Date().getFullYear()} Siddharth School Bus &amp; Travels (Nashik, Est. 2017). All Rights Reserved.
+        {/* Bottom Bar: Copyright, Developer Credit, Back to Top, and Owner Login */}
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#FBF3E7]/60">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 text-left">
+            <span>
+              © {new Date().getFullYear()} Siddharth School Bus &amp; Travels (Nashik, Est. 2017). All Rights Reserved.
+            </span>
+            <span className="hidden sm:inline text-[#B08D57]/40">•</span>
+            <span className="text-[11px] text-[#FBF3E7]/50 font-normal">
+              Developed by{' '}
+              <a
+                href="https://www.instagram.com/mangesh.l_0081?igsi=cXg3N2Y5b2xtZnc5"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#FBF3E7]/70 hover:text-[#D97B29] transition-colors underline-offset-2 hover:underline font-mono"
+              >
+                @mangesh.l_0081
+              </a>
+            </span>
           </div>
 
           <div className="flex items-center gap-6">

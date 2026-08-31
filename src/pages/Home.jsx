@@ -111,7 +111,7 @@ export default function Home() {
             </h1>
 
             <p className="text-sm sm:text-base text-[#7A6A5C] font-medium leading-relaxed max-w-xl">
-              Reliable daily school transportation with doorstep &amp; society gate pickup across Gangapur Road, College Road, Indira Nagar, and Mahatma Nagar. Managed by <strong>Mr. Siddharth Shardul</strong>.
+              Reliable daily school transportation with doorstep &amp; society gate pickup across Borgad, Adarsh Nagar, Omkar Nagar, and Swami Vivekanand Nagar (Makhamalabad). Managed by <strong>Mr. Siddharth Kailas Shardul</strong>.
             </p>
           </div>
 
@@ -134,15 +134,15 @@ export default function Home() {
           {/* Direct Support & Helpline Actions */}
           <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
             <a
-              href="tel:8767948553"
+              href="tel:8446391127"
               className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white border-2 border-[#B08D57] hover:border-[#D97B29] text-[#231A12] text-xs sm:text-sm font-black shadow-xs transition-all hover:scale-102 cursor-pointer"
             >
               <PhoneCall className="w-4 h-4 text-[#D97B29] flex-shrink-0" />
-              <span>Call Helpline: 8767948553</span>
+              <span>Mobile No.: 8446391127</span>
             </a>
 
             <a
-              href="https://wa.me/918767948553?text=Hello%20Siddharth%20Travels,%20I%20am%20a%20parent%20in%20Nashik%20inquiring%20about%20school%20bus%20routes."
+              href="https://wa.me/918446391127?text=Hello%20Siddharth%20Travels,%20I%20am%20a%20parent%20in%20Nashik%20inquiring%20about%20school%20bus%20routes."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-[#6B8F71] hover:bg-[#56735B] text-white text-xs sm:text-sm font-black shadow-md shadow-[#6B8F71]/25 transition-all hover:scale-102 cursor-pointer"
@@ -224,16 +224,6 @@ export default function Home() {
                   />
                 </div>
                 
-                <div className="flex items-center justify-between text-[11px] sm:text-xs mt-2 text-[#7A6A5C] font-medium">
-                  <span>Quick Test Account:</span>
-                  <button 
-                    type="button" 
-                    onClick={() => setPhone('9876543210')} 
-                    className="text-[#D97B29] font-mono font-black underline hover:text-[#C4621C]"
-                  >
-                    9876543210 (2 Children)
-                  </button>
-                </div>
               </div>
 
               {/* Big CTA Button */}

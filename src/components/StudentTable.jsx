@@ -181,23 +181,8 @@ export default function StudentTable({ onAddStudentClick }) {
     setPaymentModalTab('APPROVE');
     const breakdown = calculateFeeBreakdown(student);
     
-    // Suggest Phase 2 if Phase 1 is done, or Phase 1 if Phase 1 has due
-    let defaultAmount = breakdown.dueAmount > 0 ? breakdown.dueAmount : breakdown.monthlyFee;
-    let defaultTerm = 'Phase 2 (Term 2) Transport Fee';
-
-    if (breakdown.phase1Due > 0) {
-      defaultAmount = breakdown.phase1Due;
-      defaultTerm = 'Phase 1 (Term 1) Transport Fee';
-    } else if (breakdown.phase2Due > 0) {
-      defaultAmount = breakdown.phase2Due;
-      defaultTerm = 'Phase 2 (Term 2) Transport Fee';
-    } else {
-      defaultAmount = breakdown.monthlyFee;
-      defaultTerm = 'Monthly Transport Installment';
-    }
-    
-    setPaymentAmount(String(defaultAmount));
-    setPaymentTerm(defaultTerm);
+    setPaymentAmount('');
+    setPaymentTerm('');
     setCorrectTotalFee(String(breakdown.totalAnnualFee));
     setCorrectPaidAmount(String(breakdown.paidAmount));
     setAdjustTotalFee(String(breakdown.totalAnnualFee));
@@ -294,7 +279,25 @@ export default function StudentTable({ onAddStudentClick }) {
   const handleEditStudentSubmit = (e) => {
     e.preventDefault();
     if (!editModalStudent) return;
-    updateStudent(editModalStudent.id, editModalStudent);
+    
+    const totalAnnualFee = Number(editModalStudent.feeDetails?.totalAnnualFee || 33000);
+    const monthlyFee = Number(editModalStudent.feeDetails?.monthlyFee || Math.round(totalAnnualFee / 11));
+    const paidAmount = Number(editModalStudent.feeDetails?.paidAmount || 0);
+    const dueAmount = Math.max(0, totalAnnualFee - paidAmount);
+
+    const updatedData = {
+      ...editModalStudent,
+      feeDetails: {
+        ...editModalStudent.feeDetails,
+        totalAnnualFee,
+        monthlyFee,
+        paidAmount,
+        dueAmount,
+        status: dueAmount === 0 ? 'PAID' : (paidAmount > 0 ? 'PARTIAL' : 'DUE')
+      }
+    };
+
+    updateStudent(editModalStudent.id, updatedData);
     setEditModalStudent(null);
   };
 
@@ -503,7 +506,7 @@ export default function StudentTable({ onAddStudentClick }) {
                         {s.studentName}
                       </h4>
                       <div className="text-[11px] text-[#7A6A5C] font-mono mt-0.5">
-                        #{idx + 1} • {s.rollNo || s.id} • {s.grade}
+                        Student #{idx + 1}
                       </div>
                     </div>
                   </div>
@@ -554,8 +557,9 @@ export default function StudentTable({ onAddStudentClick }) {
                 {/* Financial Breakdown Box */}
                 <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-[#E5DAC6] text-[11px] font-mono">
                   <div>
-                    <div className="text-[10px] text-[#7A6A5C] font-sans">Total / Mo</div>
-                    <div className="font-bold text-[#231A12]">₹{b.totalAnnualFee.toLocaleString('en-IN')} <span className="text-[10px] font-normal text-[#7A6A5C]">(₹{b.monthlyFee}/mo)</span></div>
+                    <div className="text-[10px] text-[#7A6A5C] font-sans">Monthly Rate</div>
+                    <div className="font-bold text-[#231A12]">₹{b.monthlyFee.toLocaleString('en-IN')}<span className="text-[10px] font-normal text-[#7A6A5C]">/mo</span></div>
+                    <div className="text-[9px] text-[#7A6A5C] font-sans">Yearly: ₹{b.totalAnnualFee.toLocaleString('en-IN')}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-[10px] text-[#7A6A5C] font-sans">Paid / Due</div>
@@ -563,35 +567,25 @@ export default function StudentTable({ onAddStudentClick }) {
                       <span className="text-emerald-700">₹{b.paidAmount.toLocaleString('en-IN')}</span>
                       {' / '}
                       <span className={b.dueAmount > 0 ? 'text-red-600 font-bold' : 'text-emerald-700'}>
-                        {b.dueAmount > 0 ? `₹${b.dueAmount.toLocaleString('en-IN')}` : '₹0'}
+                        {b.dueAmount > 0 ? `₹${b.dueAmount.toLocaleString('en-IN')}` : '₹0 (Settled)'}
                       </span>
                     </div>
+                    <div className="text-[9px] text-emerald-700 font-sans">{b.clearedMonthsCount}/11 Mo Cleared</div>
                   </div>
                 </div>
 
-                {/* Phase Status Badges */}
-                <div className="flex flex-wrap items-center justify-between gap-1.5 text-[10px] font-bold">
-                  <div className="flex items-center gap-1">
-                    <span className={`px-2 py-0.5 rounded ${
-                      b.phase1Status === 'PAID' 
-                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' 
-                        : 'bg-amber-50 text-amber-900 border border-amber-300'
-                    }`}>
-                      P1: {b.phase1Status === 'PAID' ? '✓ Paid' : `Due ₹${b.phase1Due}`}
-                    </span>
-                    <span className={`px-2 py-0.5 rounded ${
-                      b.phase2Status === 'PAID' 
-                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' 
-                        : (b.phase2Status === 'PARTIAL' ? 'bg-amber-50 text-amber-900 border border-amber-300' : 'bg-red-50 text-red-800 border border-red-200')
-                    }`}>
-                      P2: {b.phase2Status === 'PAID' ? '✓ Paid' : (b.phase2Due > 0 ? `Due ₹${b.phase2Due}` : 'Pending')}
-                    </span>
-                  </div>
-
-                  <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase ${
-                    isPaid ? 'bg-emerald-100 text-emerald-900' : 'bg-amber-100 text-amber-900'
+                {/* Status Badges */}
+                <div className="flex items-center justify-between gap-1.5 text-[10px] font-bold">
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                    isPaid 
+                      ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' 
+                      : (b.paidAmount > 0 ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-red-100 text-red-900 border border-red-200')
                   }`}>
-                    {isPaid ? 'All Settled' : `Due: ₹${b.dueAmount}`}
+                    {isPaid ? '✓ Full Year Cleared' : (b.paidAmount > 0 ? 'Partial Paid' : 'Pending Fee')}
+                  </span>
+
+                  <span className="text-[10px] text-[#7A6A5C] font-mono">
+                    {isPaid ? 'June–April Paid' : `Balance: ₹${b.dueAmount}`}
                   </span>
                 </div>
 
@@ -665,10 +659,10 @@ export default function StudentTable({ onAddStudentClick }) {
                 />
               </th>
               <th className="p-3 border-r border-[#E5DAC6]/60">#</th>
-              <th className="p-3 border-r border-[#E5DAC6]/60">Student Name &amp; ID</th>
+              <th className="p-3 border-r border-[#E5DAC6]/60">Student Name</th>
               <th className="p-3 border-r border-[#E5DAC6]/60">Linked Parent Phone</th>
               <th className="p-3 border-r border-[#E5DAC6]/60">Parent Name</th>
-              <th className="p-3 border-r border-[#E5DAC6]/60">School &amp; Grade</th>
+              <th className="p-3 border-r border-[#E5DAC6]/60">School / Institute</th>
               <th className="p-3 border-r border-[#E5DAC6]/60">Pickup Stop</th>
               <th className="p-3 text-right border-r border-[#E5DAC6]/60">Monthly &amp; Total Fee (₹)</th>
               <th className="p-3 text-right border-r border-[#E5DAC6]/60 text-emerald-800">Approved Paid (₹)</th>
@@ -716,9 +710,6 @@ export default function StudentTable({ onAddStudentClick }) {
                       <div className="font-bold text-[#231A12] text-xs">
                         {s.studentName}
                       </div>
-                      <div className="text-[10px] text-[#7A6A5C] font-mono">
-                        {s.rollNo || s.id}
-                      </div>
                     </td>
 
                     {/* Linked Parent Phone */}
@@ -741,10 +732,9 @@ export default function StudentTable({ onAddStudentClick }) {
                       <div className="font-medium text-[#231A12]">{s.parentName || 'Parent'}</div>
                     </td>
 
-                    {/* School & Grade */}
+                    {/* School */}
                     <td className="p-2.5 border-r border-[#E5DAC6]/60">
                       <div className="font-medium text-[#231A12]">{s.schoolName}</div>
-                      <div className="text-[10px] text-[#7A6A5C] font-mono">{s.grade}</div>
                     </td>
 
                     {/* Pickup Stop with 1-Click Quick Edit */}
@@ -780,47 +770,29 @@ export default function StudentTable({ onAddStudentClick }) {
                     <td className="p-2.5 text-right font-mono font-bold text-xs text-emerald-700 border-r border-[#E5DAC6]/60">
                       <div>₹{b.paidAmount.toLocaleString('en-IN')}</div>
                       <div className="text-[10px] text-[#7A6A5C] font-sans font-medium">
-                        {b.clearedMonthsCount}/10 Mo Cleared
+                        {b.clearedMonthsCount}/11 Mo Cleared
                       </div>
                     </td>
 
                     {/* Due Amount (Monthly + Total) */}
                     <td className="p-2.5 text-right font-mono text-xs border-r border-[#E5DAC6]/60">
                       <div className="font-bold text-red-600">
-                        {b.dueAmount > 0 ? `₹${b.monthlyDue.toLocaleString('en-IN')}/mo` : '₹0'}
+                        {b.dueAmount > 0 ? `₹${b.dueAmount.toLocaleString('en-IN')}` : '₹0'}
                       </div>
-                      <div className="text-[10px] text-red-700 font-medium">
-                        {b.dueAmount > 0 ? `₹${b.dueAmount.toLocaleString('en-IN')} Due` : 'Cleared'}
+                      <div className="text-[10px] text-[#7A6A5C] font-medium">
+                        {b.dueAmount > 0 ? 'Pending Balance' : '✓ Full Cleared'}
                       </div>
                     </td>
 
-                    {/* Phase 1 & Phase 2 Status Badges */}
+                    {/* Status Badge */}
                     <td className="p-2.5 text-center border-r border-[#E5DAC6]/60 whitespace-nowrap">
-                      <div className="flex flex-col gap-1 items-center justify-center">
-                        <div className="flex items-center gap-1 text-[10px] font-bold">
-                          <span className={`px-1.5 py-0.2 rounded ${
-                            b.phase1Status === 'PAID' 
-                              ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' 
-                              : 'bg-amber-50 text-amber-900 border border-amber-300'
-                          }`}>
-                            P1: {b.phase1Status === 'PAID' ? '✓ Paid' : `₹${b.phase1Due}`}
-                          </span>
-                          <span className={`px-1.5 py-0.2 rounded ${
-                            b.phase2Status === 'PAID' 
-                              ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' 
-                              : (b.phase2Status === 'PARTIAL' ? 'bg-amber-50 text-amber-900 border border-amber-300' : 'bg-red-50 text-red-800 border border-red-200')
-                          }`}>
-                            P2: {b.phase2Status === 'PAID' ? '✓ Paid' : (b.phase2Due > 0 ? `₹${b.phase2Due}` : 'Pending')}
-                          </span>
-                        </div>
-                        <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
-                          isPaid 
-                            ? 'bg-emerald-100 text-emerald-900 font-black' 
-                            : 'bg-amber-100 text-amber-900 font-bold'
-                        }`}>
-                          {isPaid ? 'All Settled' : `Due: ₹${b.dueAmount}`}
-                        </span>
-                      </div>
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                        isPaid 
+                          ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' 
+                          : (b.paidAmount > 0 ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-red-100 text-red-900 border border-red-200')
+                      }`}>
+                        {isPaid ? '✓ Fully Cleared' : (b.paidAmount > 0 ? 'Partial Paid' : 'Pending Payment')}
+                      </span>
                     </td>
 
                     {/* Actions Toolbar (Standardized Heights & No Wrapping) */}
@@ -984,7 +956,7 @@ export default function StudentTable({ onAddStudentClick }) {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Jehan Circle, College Road, Gangapur Naka"
+                  placeholder="e.g. Swami Vivekanand Nagar, Borgad, Adarsh Nagar"
                   value={bulkStopName}
                   onChange={(e) => setBulkStopName(e.target.value)}
                   className="w-full bg-zinc-50 border border-zinc-300 rounded-xl px-3.5 py-2.5 text-xs font-bold text-zinc-900 focus:bg-white focus:border-amber-600 outline-none"
@@ -1160,94 +1132,31 @@ export default function StudentTable({ onAddStudentClick }) {
               return (
                 <form onSubmit={handleRecordPaymentSubmit} className="space-y-3 text-xs">
                   
-                  {/* Quick 1-Click Presets for Phase 1, Phase 2, Monthly, Clear All */}
-                  <div className="space-y-1.5 bg-[#FAF7F0] p-2.5 rounded-xl border border-[#E5DAC6]">
-                    <div className="text-[10px] font-bold uppercase tracking-wider text-[#7A6A5C] flex items-center justify-between">
-                      <span>1-Click Fee Presets</span>
-                      <span className="font-mono text-[#231A12]">Due: ₹{b.dueAmount.toLocaleString('en-IN')}</span>
+                  {/* Simple Fee Status Banner */}
+                  <div className="flex items-center justify-between p-3 bg-[#FAF7F0] rounded-xl border border-[#E5DAC6] text-xs">
+                    <div>
+                      <span className="text-[#7A6A5C] block text-[10px] uppercase font-bold">Yearly Total</span>
+                      <strong className="text-sm font-mono text-[#231A12]">₹{b.totalAnnualFee.toLocaleString('en-IN')}</strong>
                     </div>
-                    <div className="grid grid-cols-2 gap-1.5">
-                      {/* Phase 1 Preset */}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const amt = b.phase1Due > 0 ? b.phase1Due : b.phase1Target;
-                          setPaymentAmount(String(amt));
-                          setPaymentTerm('Phase 1 (Term 1) Transport Fee');
-                        }}
-                        className={`p-1.5 rounded-lg border text-left font-sans transition-colors cursor-pointer ${
-                          b.phase1Status === 'PAID'
-                            ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
-                            : 'bg-white hover:bg-amber-50 border-[#E5DAC6] text-[#231A12]'
-                        }`}
-                      >
-                        <div className="text-[10px] font-bold text-[#7A6A5C]">
-                          Phase 1 (Term 1) {b.phase1Status === 'PAID' ? '✓ Paid' : ''}
-                        </div>
-                        <div className="text-xs font-mono font-bold">
-                          ₹{b.phase1Target.toLocaleString('en-IN')} {b.phase1Due > 0 ? `(₹${b.phase1Due} due)` : ''}
-                        </div>
-                      </button>
-
-                      {/* Phase 2 Preset */}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const amt = b.phase2Due > 0 ? b.phase2Due : b.phase2Target;
-                          setPaymentAmount(String(amt));
-                          setPaymentTerm('Phase 2 (Term 2) Transport Fee');
-                        }}
-                        className={`p-1.5 rounded-lg border text-left font-sans transition-colors cursor-pointer ${
-                          b.phase2Status === 'PAID'
-                            ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
-                            : (b.phase1Status === 'PAID' ? 'bg-amber-50 border-amber-300 text-amber-900 ring-1 ring-amber-400' : 'bg-white hover:bg-amber-50 border-[#E5DAC6] text-[#231A12]')
-                        }`}
-                      >
-                        <div className="text-[10px] font-bold text-[#7A6A5C]">
-                          Phase 2 (Term 2) {b.phase2Status === 'PAID' ? '✓ Paid' : (b.phase1Status === 'PAID' ? '👉 Recommended' : '')}
-                        </div>
-                        <div className="text-xs font-mono font-bold">
-                          ₹{b.phase2Target.toLocaleString('en-IN')} {b.phase2Due > 0 ? `(₹${b.phase2Due} due)` : ''}
-                        </div>
-                      </button>
-
-                      {/* 1 Month Preset */}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setPaymentAmount(String(b.monthlyFee));
-                          setPaymentTerm('Monthly Transport Fee Installment');
-                        }}
-                        className="p-1.5 rounded-lg border bg-white hover:bg-[#FAF7F0] border-[#E5DAC6] text-left font-sans transition-colors cursor-pointer text-[#231A12]"
-                      >
-                        <div className="text-[10px] font-bold text-[#7A6A5C]">1 Month Installment</div>
-                        <div className="text-xs font-mono font-bold">₹{b.monthlyFee.toLocaleString('en-IN')} / mo</div>
-                      </button>
-
-                      {/* Clear Full Due Preset */}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setPaymentAmount(String(b.dueAmount));
-                          setPaymentTerm('Full Academic Year Transport Fee');
-                        }}
-                        disabled={b.dueAmount === 0}
-                        className="p-1.5 rounded-lg border bg-emerald-50 hover:bg-emerald-100 border-emerald-300 text-left font-sans transition-colors cursor-pointer text-emerald-900 disabled:opacity-50"
-                      >
-                        <div className="text-[10px] font-bold text-emerald-800">Clear All Remaining</div>
-                        <div className="text-xs font-mono font-bold">₹{b.dueAmount.toLocaleString('en-IN')} Total</div>
-                      </button>
+                    <div>
+                      <span className="text-emerald-800 block text-[10px] uppercase font-bold">Paid So Far</span>
+                      <strong className="text-sm font-mono text-emerald-700">₹{b.paidAmount.toLocaleString('en-IN')}</strong>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-red-700 block text-[10px] uppercase font-bold">Remaining Due</span>
+                      <strong className="text-sm font-mono text-red-700">₹{b.dueAmount.toLocaleString('en-IN')}</strong>
                     </div>
                   </div>
 
                   <div>
                     <label className="block font-bold text-zinc-700 uppercase text-[10px] mb-1">
-                      Amount Received from Parent (INR)
+                      Amount Received from Parent (INR) *
                     </label>
                     <input
                       type="number"
                       required
                       min="1"
+                      placeholder="e.g. 3000"
                       value={paymentAmount}
                       onChange={(e) => setPaymentAmount(e.target.value)}
                       className="w-full bg-zinc-50 border border-zinc-300 rounded-xl px-3.5 py-2 text-base font-mono font-bold text-zinc-900 focus:bg-white focus:border-amber-600 outline-none"
@@ -1256,14 +1165,14 @@ export default function StudentTable({ onAddStudentClick }) {
                     {/* Dynamic calculation preview */}
                     {paymentAmount && Number(paymentAmount) > 0 && (
                       <div className="mt-1 text-[11px] text-zinc-600 font-medium">
-                        Remaining due will become: <strong className="text-red-700 font-mono">₹{Math.max(0, (paymentModalStudent.feeDetails?.totalAnnualFee || 30000) - ((paymentModalStudent.feeDetails?.paidAmount || 0) + Number(paymentAmount))).toLocaleString('en-IN')}</strong>
+                        Remaining balance after this payment: <strong className="text-red-700 font-mono">₹{Math.max(0, (paymentModalStudent.feeDetails?.totalAnnualFee || 33000) - ((paymentModalStudent.feeDetails?.paidAmount || 0) + Number(paymentAmount))).toLocaleString('en-IN')}</strong>
                       </div>
                     )}
                   </div>
 
                   <div>
                     <label className="block font-bold text-zinc-700 uppercase text-[10px] mb-1">
-                      Payment Received Via
+                      Payment Received Via *
                     </label>
                     <select
                       value={paymentMode}
@@ -1271,7 +1180,7 @@ export default function StudentTable({ onAddStudentClick }) {
                       className="w-full bg-zinc-50 border border-zinc-300 rounded-xl px-3.5 py-2 text-xs font-bold text-zinc-900 outline-none"
                     >
                       <option value="Offline Cash (Direct Handover)">Offline Cash (Direct Handover)</option>
-                      <option value="UPI (8767948553@upi / Scanner)">UPI (8767948553@upi / Scanner)</option>
+                      <option value="UPI (8446391127@upi / Scanner)">UPI (8446391127@upi / Scanner)</option>
                       <option value="Bank Transfer / NEFT">Bank Transfer / NEFT</option>
                       <option value="Cheque Deposit">Cheque Deposit</option>
                     </select>
@@ -1279,32 +1188,16 @@ export default function StudentTable({ onAddStudentClick }) {
 
                   <div>
                     <label className="block font-bold text-zinc-700 uppercase text-[10px] mb-1">
-                      Receipt Memo / Fee Term
+                      Receipt Memo / Fee Description *
                     </label>
                     <input
                       type="text"
                       required
+                      placeholder="e.g. Monthly Transport Fee Installment"
                       value={paymentTerm}
                       onChange={(e) => setPaymentTerm(e.target.value)}
                       className="w-full bg-zinc-50 border border-zinc-300 rounded-xl px-3.5 py-2 text-xs font-medium text-zinc-900 outline-none"
                     />
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {[
-                        'Phase 1 (Term 1) Transport Fee',
-                        'Phase 2 (Term 2) Transport Fee',
-                        'Monthly Transport Installment',
-                        'Full Academic Year (Phase 1 & 2)'
-                      ].map((termChoice) => (
-                        <button
-                          key={termChoice}
-                          type="button"
-                          onClick={() => setPaymentTerm(termChoice)}
-                          className="text-[10px] px-2 py-0.5 rounded bg-zinc-100 hover:bg-amber-50 text-zinc-700 hover:text-amber-900 border border-zinc-200 cursor-pointer"
-                        >
-                          {termChoice}
-                        </button>
-                      ))}
-                    </div>
                   </div>
 
                   <div className="pt-2 flex gap-2.5">
@@ -1470,26 +1363,15 @@ export default function StudentTable({ onAddStudentClick }) {
 
             <form onSubmit={handleEditStudentSubmit} className="space-y-3 text-xs">
               
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-bold text-zinc-700 uppercase text-[10px] mb-1">Student Full Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={editModalStudent.studentName}
-                    onChange={(e) => setEditModalStudent({ ...editModalStudent, studentName: e.target.value })}
-                    className="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 font-bold outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold text-zinc-700 uppercase text-[10px] mb-1">Roll / Student ID</label>
-                  <input
-                    type="text"
-                    value={editModalStudent.rollNo || ''}
-                    onChange={(e) => setEditModalStudent({ ...editModalStudent, rollNo: e.target.value })}
-                    className="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 font-mono outline-none"
-                  />
-                </div>
+              <div>
+                <label className="block font-bold text-zinc-700 uppercase text-[10px] mb-1">Student Full Name</label>
+                <input
+                  type="text"
+                  required
+                  value={editModalStudent.studentName}
+                  onChange={(e) => setEditModalStudent({ ...editModalStudent, studentName: e.target.value })}
+                  className="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 font-bold outline-none"
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -1516,26 +1398,15 @@ export default function StudentTable({ onAddStudentClick }) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-bold text-zinc-700 uppercase text-[10px] mb-1">School Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={editModalStudent.schoolName}
-                    onChange={(e) => setEditModalStudent({ ...editModalStudent, schoolName: e.target.value })}
-                    className="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block font-bold text-zinc-700 uppercase text-[10px] mb-1">Class / Grade</label>
-                  <input
-                    type="text"
-                    value={editModalStudent.grade}
-                    onChange={(e) => setEditModalStudent({ ...editModalStudent, grade: e.target.value })}
-                    className="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 outline-none"
-                  />
-                </div>
+              <div>
+                <label className="block font-bold text-zinc-700 uppercase text-[10px] mb-1">School Name</label>
+                <input
+                  type="text"
+                  required
+                  value={editModalStudent.schoolName}
+                  onChange={(e) => setEditModalStudent({ ...editModalStudent, schoolName: e.target.value })}
+                  className="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 outline-none"
+                />
               </div>
 
               <div>
@@ -1546,6 +1417,56 @@ export default function StudentTable({ onAddStudentClick }) {
                   onChange={(e) => setEditModalStudent({ ...editModalStudent, stopName: e.target.value })}
                   className="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 outline-none"
                 />
+              </div>
+
+              {/* Editable Fees for This Parent / Student */}
+              <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-xl space-y-2">
+                <div className="font-bold text-amber-900 text-[11px] uppercase tracking-wider">
+                  Custom Transport Fee Structure
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-zinc-700 uppercase text-[10px] mb-1">
+                      Yearly Total Fee (₹)
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={editModalStudent.feeDetails?.totalAnnualFee || 33000}
+                      onChange={(e) => {
+                        const newYearly = Number(e.target.value) || 0;
+                        const newMonthly = Math.round(newYearly / 11);
+                        setEditModalStudent({
+                          ...editModalStudent,
+                          feeDetails: {
+                            ...editModalStudent.feeDetails,
+                            totalAnnualFee: newYearly,
+                            monthlyFee: newMonthly
+                          }
+                        });
+                      }}
+                      className="w-full bg-white border border-zinc-300 rounded-xl p-2 font-mono font-bold text-zinc-900 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-bold text-zinc-700 uppercase text-[10px] mb-1">
+                      Monthly Rate (₹/mo)
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={editModalStudent.feeDetails?.monthlyFee || 3000}
+                      onChange={(e) => setEditModalStudent({
+                        ...editModalStudent,
+                        feeDetails: {
+                          ...editModalStudent.feeDetails,
+                          monthlyFee: Number(e.target.value) || 0
+                        }
+                      })}
+                      className="w-full bg-white border border-zinc-300 rounded-xl p-2 font-mono font-bold text-zinc-900 outline-none"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="pt-3 flex gap-2.5">

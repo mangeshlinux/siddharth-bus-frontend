@@ -27,53 +27,7 @@ export default function NotificationModal({ isOpen, onClose }) {
 
   if (!isOpen) return null;
 
-  const smartTemplates = [
-    {
-      label: '🚦 Route Traffic Delay (15 Mins)',
-      title: 'Morning Route Traffic Delay Notice (10-15 Mins)',
-      body: 'Dear Parents, due to morning traffic congestion on Gangapur & College Road, morning school pickup is running approximately 10-15 minutes behind schedule. All children are safely seated under verified attendant supervision.',
-      urgent: true
-    },
-    {
-      label: '📅 Phase 2 (Term 2) Fee Reminder',
-      title: 'Phase 2 (Term 2) School Bus Transport Fee Due Notice',
-      body: 'Dear Parents, Phase 2 transportation fee cycle (Nov 2026 – Mar 2027) is active. Kindly clear pending Phase 2 balances online via UPI (8767948553@upi) or offline cash to download verified official receipts from your Parent Portal.',
-      urgent: false
-    },
-    {
-      label: '💰 General Fee Reminder',
-      title: 'Reminder: Term School Bus Transportation Fee Due',
-      body: 'Dear Parents, kindly clear any pending term transport fees by this weekend. Offline cash handover and UPI to 8767948553@upi are verified and updated with instant paper receipts.',
-      urgent: false
-    },
-    {
-      label: '🌧️ Monsoon / Weather Caution',
-      title: 'Monsoon Transit Advisory: Safe Slow Commute',
-      body: 'Dear Parents, due to continuous heavy rainfall in Nashik, all school buses are operating under strict safety speed limiters with extra caution. Minor delays of 10 minutes may occur during evening drop.',
-      urgent: true
-    },
-    {
-      label: '📅 School Holiday Notice',
-      title: 'School Transport Holiday Notice',
-      body: 'Dear Parents, please note that school bus transport services will remain closed tomorrow for the official holiday. Normal schedule resumes the next school working day.',
-      urgent: false
-    },
-    {
-      label: '🚌 Vehicle Route Update',
-      title: 'Transport Fleet Route & Attendant Update',
-      body: 'Dear Parents, designated bus routes and trained attendants are active for all school routes. For any sudden address or stop change requests, please contact Mr. Siddharth directly.',
-      urgent: false
-    }
-  ];
-
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleApplyTemplate = (tmpl) => {
-    setTitle(tmpl.title);
-    setMessage(tmpl.body);
-    setIsUrgent(tmpl.urgent);
-    setSentStatus('');
-  };
 
   const handlePublish = async (e) => {
     e.preventDefault();
@@ -103,20 +57,20 @@ export default function NotificationModal({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-150 text-left font-sans">
-      <div className="bg-white border border-zinc-200 rounded-2xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl relative max-h-[92vh] flex flex-col text-zinc-900">
+      <div className="bg-white border border-zinc-200 rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-2xl relative max-h-[92vh] flex flex-col text-zinc-900">
         
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-zinc-100">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 text-[#D97B29] flex items-center justify-center flex-shrink-0">
-              <Radio className="w-5 h-5 animate-pulse" />
+              <Radio className="w-5 h-5" />
             </div>
             <div>
               <h2 className="text-base sm:text-lg font-bold text-zinc-900 leading-tight">
-                Live Broadcast Dispatcher
+                New Parent Announcement
               </h2>
               <p className="text-xs text-zinc-500">
-                Publish instant announcements to the website header ticker &amp; Parent Portal
+                Publish live notice to website ticker &amp; parent portal
               </p>
             </div>
           </div>
@@ -130,26 +84,6 @@ export default function NotificationModal({ isOpen, onClose }) {
 
         {/* Scrollable Content Body */}
         <div className="flex-1 overflow-y-auto py-4 space-y-4 pr-1">
-          
-          {/* Quick Smart Templates */}
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-1.5 text-[11px] font-bold text-zinc-600 uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5 text-[#D97B29]" />
-              <span>1-Click Smart Presets</span>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {smartTemplates.map((tmpl, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => handleApplyTemplate(tmpl)}
-                  className="px-2.5 py-1 rounded-lg bg-zinc-50 hover:bg-amber-50 hover:border-amber-300 text-zinc-700 hover:text-[#231A12] border border-zinc-200 text-xs font-medium transition-colors cursor-pointer"
-                >
-                  {tmpl.label}
-                </button>
-              ))}
-            </div>
-          </div>
 
           {/* Broadcast Form */}
           <form onSubmit={handlePublish} className="space-y-3 text-xs">
@@ -165,10 +99,14 @@ export default function NotificationModal({ isOpen, onClose }) {
                   onChange={(e) => setTargetAudience(e.target.value)}
                   className="w-full bg-zinc-50 border border-zinc-300 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-900 outline-none"
                 >
-                  <option value="All Parents">All Enrolled Parents (Universal)</option>
-                  {schools.map(s => (
-                    <option key={s.id} value={`${s.name} Parents`}>Only {s.name} Parents</option>
-                  ))}
+                  <option value="All Parents">👥 All Enrolled Parents (Universal)</option>
+                  <option value="Parents with Pending / Due Fees">⚠️ Parents with Pending / Due Fees Only</option>
+                  <option value="Shree Chatrapati Shivaji Maharaj Vidhaylay Makhamalabad. Parents">🏫 Shree Chatrapati Shivaji Maharaj Vidhaylay Makhamalabad. Only</option>
+                  <option value="New Grace Academy, Akta Nagar,Borgad Nashik Parents">🏫 New Grace Academy, Akta Nagar,Borgad Nashik Only</option>
+                  <option value="Kaka Saheb Deodhar English Medium School, Reliance Pump Dindori Road.Nashik Parents">🏫 Kaka Saheb Deodhar English Medium School, Reliance Pump Dindori Road.Nashik Only</option>
+                  <option value="Route 1 (Borgad / Makhamalabad) Parents">🚌 Route 1 (Borgad / Makhamalabad) Parents Only</option>
+                  <option value="Route 2 (Adarsh / Vivekanand) Parents">🚌 Route 2 (Adarsh / Vivekanand) Parents Only</option>
+                  <option value="Route 3 (Dindori Road / Borgad) Parents">🚌 Route 3 (Dindori Road / Borgad) Parents Only</option>
                 </select>
               </div>
 
@@ -203,7 +141,7 @@ export default function NotificationModal({ isOpen, onClose }) {
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. Bus #2 Morning Route 15-Min Delay Notice"
+                placeholder="e.g. Tomorrow School Holiday Notice"
                 className="w-full bg-zinc-50 border border-zinc-300 rounded-xl px-3.5 py-2 text-xs font-bold text-zinc-900 focus:bg-white focus:border-amber-600 outline-none"
               />
             </div>

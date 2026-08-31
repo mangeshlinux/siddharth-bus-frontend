@@ -60,14 +60,14 @@ export default function ExcelUploadModal({ isOpen, onClose }) {
           const name = row['Student Name'] || row['StudentName'] || row['Name'] || `Student ${index + 1}`;
           const parent = row['Parent Name'] || row['ParentName'] || row['Father Name'] || 'Parent';
           const phone = String(row['Parent Phone'] || row['Phone'] || row['Mobile'] || '9876543210').replace(/\D/g, '').slice(-10);
-          const school = row['School Name'] || row['School'] || schools[0]?.name || 'Fravashi International Academy';
+          const school = row['School Name'] || row['School'] || schools[0]?.name || 'Shree Chatrapati Shivaji Maharaj Vidhaylay Makhamalabad.';
           const grade = row['Grade'] || row['Class'] || 'Grade 5';
           const bus = row['Bus No'] || row['Bus'] || 'Bus #1';
-          const route = row['Route Name'] || row['Route'] || 'Route 1: Gangapur Road - College Road';
-          const stop = row['Stop Name'] || row['Pickup Stop'] || 'Main Road Stop';
+          const route = row['Route Name'] || row['Route'] || 'Route 1: Borgad - Adarsh Nagar - Omkar Nagar - Swami Vivekanand Nagar';
+          const stop = row['Stop Name'] || row['Pickup Stop'] || 'Swami Vivekanand Nagar Gate';
           const pickup = row['Pickup Time'] || '07:15 AM';
           const drop = row['Drop Time'] || '02:30 PM';
-          const totalFee = Number(row['Total Fee'] || row['TotalFee'] || row['Annual Fee'] || 32000);
+          const totalFee = Number(row['Total Fee'] || row['TotalFee'] || row['Annual Fee'] || 33000);
           const paidFee = Number(row['Paid Fee'] || row['PaidFee'] || 0);
 
           return {
@@ -95,27 +95,17 @@ export default function ExcelUploadModal({ isOpen, onClose }) {
             },
             feeDetails: (() => {
               const due = Math.max(0, totalFee - paidFee);
-              const p1Target = Math.round(totalFee / 2);
-              const p2Target = totalFee - p1Target;
-              const p1Paid = Math.min(paidFee, p1Target);
-              const p2Paid = Math.max(0, paidFee - p1Target);
-              const p1Due = Math.max(0, p1Target - p1Paid);
-              const p2Due = Math.max(0, p2Target - p2Paid);
+              const monthlyFee = Math.round(totalFee / 11);
 
               return {
                 totalAnnualFee: totalFee,
+                monthlyFee: monthlyFee,
                 paidAmount: paidFee,
                 dueAmount: due,
-                phase1Amount: p1Target,
-                phase1Paid: p1Paid,
-                phase1Status: p1Due === 0 ? 'PAID' : (p1Paid > 0 ? 'PARTIAL' : 'DUE'),
-                phase2Amount: p2Target,
-                phase2Paid: p2Paid,
-                phase2Status: p2Due === 0 ? 'PAID' : (p2Paid > 0 ? 'PARTIAL' : 'DUE'),
                 status: paidFee >= totalFee ? 'PAID' : (paidFee > 0 ? 'PARTIAL' : 'DUE'),
                 lastPaymentDate: paidFee > 0 ? new Date().toISOString().split('T')[0] : 'N/A',
                 lastReceiptNo: `REC-IMP-${100 + index}`,
-                nextDueDate: p2Due > 0 ? '2026-10-15 (Phase 2 Due)' : 'Fully Paid for 2026-27',
+                nextDueDate: due > 0 ? 'Next Month 10th' : 'Fully Settled (June–April)',
                 paymentMode: 'Excel Import',
                 paymentsHistory: paidFee > 0 ? [
                   {
@@ -135,12 +125,11 @@ export default function ExcelUploadModal({ isOpen, onClose }) {
         setPreviewRows(formattedStudents.slice(0, 5));
         setIsProcessing(false);
       } catch (err) {
-        console.error(err);
-        setErrorMsg('Failed to parse Excel file. Please ensure valid format.');
+        console.error('Spreadsheet parse error:', err);
+        setErrorMsg('Failed to process spreadsheet file. Ensure it is a valid format (.xlsx or .csv).');
         setIsProcessing(false);
       }
     };
-
     reader.readAsArrayBuffer(uploadedFile);
   };
 
@@ -183,34 +172,34 @@ export default function ExcelUploadModal({ isOpen, onClose }) {
   const downloadSampleTemplate = () => {
     const templateData = [
       {
-        "Roll No": "FIA-8A-01",
+        "Roll No": "SCSMV-8A-01",
         "Student Name": "Arjun Deshmukh",
         "Parent Name": "Rajendra Deshmukh",
         "Parent Phone": "9823123456",
-        "School Name": "Fravashi International Academy",
+        "School Name": "Shree Chatrapati Shivaji Maharaj Vidhaylay Makhamalabad.",
         "Grade": "Grade 8-A",
         "Bus No": "Bus #1",
-        "Route Name": "Route 1: Gangapur Road - College Road",
-        "Stop Name": "Jehan Circle",
+        "Route Name": "Route 1: Borgad - Adarsh Nagar - Omkar Nagar - Swami Vivekanand Nagar",
+        "Stop Name": "Swami Vivekanand Nagar",
         "Pickup Time": "07:15 AM",
         "Drop Time": "02:45 PM",
-        "Total Fee": 32000,
-        "Paid Fee": 16000
+        "Total Fee": 33000,
+        "Paid Fee": 16500
       },
       {
-        "Roll No": "WHIS-5B-12",
+        "Roll No": "NGA-5B-12",
         "Student Name": "Pooja Hegde",
         "Parent Name": "Suresh Hegde",
         "Parent Phone": "9890123789",
-        "School Name": "Wisdom High International School",
+        "School Name": "New Grace Academy, Akta Nagar,Borgad Nashik",
         "Grade": "Grade 5-B",
         "Bus No": "Bus #2",
-        "Route Name": "Route 2: Indira Nagar - Mumbai Naka",
-        "Stop Name": "Indira Nagar Jogging Track",
+        "Route Name": "Route 2: Makhamalabad - Swami Vivekanand Nagar - Adarsh Nagar",
+        "Stop Name": "Adarsh Nagar Corner",
         "Pickup Time": "07:00 AM",
         "Drop Time": "03:00 PM",
-        "Total Fee": 36000,
-        "Paid Fee": 36000
+        "Total Fee": 33000,
+        "Paid Fee": 33000
       }
     ];
 
@@ -340,7 +329,6 @@ export default function ExcelUploadModal({ isOpen, onClose }) {
                 <table className="w-full text-left text-xs text-[#231A12]">
                   <thead className="bg-[#FBF3E7] text-[#3B2314] uppercase text-[10px] font-black">
                     <tr>
-                      <th className="p-3">Roll No</th>
                       <th className="p-3">Student Name</th>
                       <th className="p-3">Parent Phone</th>
                       <th className="p-3">School</th>
@@ -351,10 +339,9 @@ export default function ExcelUploadModal({ isOpen, onClose }) {
                   <tbody className="divide-y divide-[#F5E8D3]">
                     {previewRows.map((r, i) => (
                       <tr key={i}>
-                        <td className="p-3 font-mono font-bold">{r.rollNo}</td>
                         <td className="p-3 font-bold text-[#231A12]">{r.studentName}</td>
                         <td className="p-3 font-mono text-[#7A6A5C]">{r.parentPhone}</td>
-                        <td className="p-3">{r.schoolName} ({r.grade})</td>
+                        <td className="p-3">{r.schoolName}</td>
                         <td className="p-3 text-[#D97B29] font-semibold">{r.busNo}</td>
                         <td className="p-3 font-mono font-black text-[#2F4F35]">₹{r.feeDetails.totalAnnualFee}</td>
                       </tr>

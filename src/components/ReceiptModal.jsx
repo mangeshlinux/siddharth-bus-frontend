@@ -136,14 +136,14 @@ export default function ReceiptModal({
                   SIDDHARTH SCHOOL BUS &amp; TRAVELS
                 </h1>
                 <p className="text-[9px] font-bold text-[#666] uppercase mt-0.5">
-                  Official Transport Tax Invoice • Shop 4, Shree Samarth Plaza, Nashik
+                  Official Transport Tax Invoice • Plot No 49, Vithu Mauli Colony Lane No 1, Swami Vivekanand Nagar, Makhamalabad, Nashik
                 </p>
               </div>
             </div>
             
             <div className="text-right text-[9px] font-mono text-[#333]">
               <div>Reg: <strong>MH-NSK-SB-2017</strong></div>
-              <div>Helpline: <strong>+91 8767948553</strong></div>
+              <div>Helpline: <strong>+91 84463 91127</strong></div>
             </div>
           </div>
 
@@ -159,7 +159,7 @@ export default function ReceiptModal({
             </div>
             <div>
               <span className="text-[#666]">Academic Session: </span>
-              <strong className="text-[#1A1A1A]">2026 - 2027</strong>
+              <strong className="text-[#1A1A1A]">2026 - 2027 (June to April)</strong>
             </div>
           </div>
 
@@ -167,7 +167,7 @@ export default function ReceiptModal({
           <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px] mb-2.5 bg-[#FAF7F0] p-2.5 border border-[#DDD] leading-tight">
             <div>
               <span className="text-[#666]">Student: </span>
-              <strong className="text-[#1A1A1A] uppercase">{student.studentName}</strong> ({student.grade})
+              <strong className="text-[#1A1A1A] uppercase">{student.studentName}</strong>
             </div>
             <div>
               <span className="text-[#666]">Parent: </span>
@@ -197,9 +197,9 @@ export default function ReceiptModal({
               <tr>
                 <td className="p-1.5 border-r border-[#1A1A1A] text-center font-mono">1</td>
                 <td className="p-1.5 border-r border-[#1A1A1A]">
-                  <div className="font-bold text-[#1A1A1A]">Annual School Bus Transportation Fee (10-Month Academic Session)</div>
+                  <div className="font-bold text-[#1A1A1A]">Annual School Bus Transportation Fee (11-Month Academic Session — June to April)</div>
                   <div className="text-[9px] text-[#555] font-semibold">
-                    Cycle: {currentReceipt.term || 'Approved Transport Installment'} • Monthly Rate: ₹{Math.round(totalAnnualFee / 10).toLocaleString('en-IN')}/mo
+                    Cycle: {currentReceipt.term || 'Approved Transport Installment'} • Monthly Rate: ₹{Math.round(totalAnnualFee / 11).toLocaleString('en-IN')}/mo
                   </div>
                 </td>
                 <td className="p-1.5 border-r border-[#1A1A1A] text-center font-mono text-[10px]">
@@ -257,7 +257,7 @@ export default function ReceiptModal({
             <div className="text-center w-40">
               <div className="h-6 flex items-end justify-center pb-0.5">
                 <span className="font-serif italic text-xs font-black text-[#1A1A1A]">
-                  Siddharth Shardul
+                  Siddharth Kailas Shardul
                 </span>
               </div>
               <div className="border-t border-[#666] pt-0.5">

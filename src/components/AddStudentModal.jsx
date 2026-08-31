@@ -12,14 +12,14 @@ export default function AddStudentModal({ isOpen, onClose }) {
     parentPhone: '',
     alternatePhone: '',
     email: '',
-    schoolName: schools[0]?.name || "Fravashi International Academy",
+    schoolName: schools[0]?.name || "Shree Chatrapati Shivaji Maharaj Vidhaylay Makhamalabad.",
     grade: 'Grade 6-A',
     busNo: 'Bus #1',
-    routeName: fleet[0]?.routeName || 'Route 1: Gangapur Road - College Road',
+    routeName: fleet[0]?.routeName || 'Route 1: Borgad - Adarsh Nagar - Omkar Nagar - Swami Vivekanand Nagar',
     stopName: '',
     pickupTime: '07:15 AM',
     dropTime: '02:30 PM',
-    totalAnnualFee: '32000',
+    totalAnnualFee: '33000',
     paidAmount: '0'
   });
 
@@ -39,15 +39,10 @@ export default function AddStudentModal({ isOpen, onClose }) {
 
     setIsSubmitting(true);
     try {
-      const total = Number(formData.totalAnnualFee) || 30000;
+      const total = Number(formData.totalAnnualFee) || 33000;
+      const monthlyFee = Math.round(total / 11);
       const paid = Number(formData.paidAmount) || 0;
       const due = Math.max(0, total - paid);
-      const p1Target = Math.round(total / 2);
-      const p2Target = total - p1Target;
-      const p1Paid = Math.min(paid, p1Target);
-      const p2Paid = Math.max(0, paid - p1Target);
-      const p1Due = Math.max(0, p1Target - p1Paid);
-      const p2Due = Math.max(0, p2Target - p2Paid);
       const receiptNo = paid > 0 ? `REC-2026-${Math.floor(1000 + Math.random() * 9000)}` : null;
       const today = new Date().toISOString().split('T')[0];
 
@@ -67,18 +62,13 @@ export default function AddStudentModal({ isOpen, onClose }) {
         dropTime: formData.dropTime,
         feeDetails: {
           totalAnnualFee: total,
+          monthlyFee: monthlyFee,
           paidAmount: paid,
           dueAmount: due,
-          phase1Amount: p1Target,
-          phase1Paid: p1Paid,
-          phase1Status: p1Due === 0 ? 'PAID' : (p1Paid > 0 ? 'PARTIAL' : 'DUE'),
-          phase2Amount: p2Target,
-          phase2Paid: p2Paid,
-          phase2Status: p2Due === 0 ? 'PAID' : (p2Paid > 0 ? 'PARTIAL' : 'DUE'),
           status: due === 0 ? 'PAID' : (paid > 0 ? 'PARTIAL' : 'DUE'),
           lastPaymentDate: paid > 0 ? today : null,
           lastReceiptNo: receiptNo,
-          nextDueDate: p2Due > 0 ? '2026-10-15 (Phase 2 Due)' : 'Fully Paid for 2026-27',
+          nextDueDate: due > 0 ? 'Next Month 10th' : 'Fully Paid for 2026-27',
           paymentMode: 'Offline Cash',
           paymentsHistory: paid > 0 ? [
             {
@@ -86,7 +76,7 @@ export default function AddStudentModal({ isOpen, onClose }) {
               amount: paid,
               date: today,
               mode: 'Advance / Initial Payment',
-              term: p1Due === 0 && p2Due === 0 ? 'Full Academic Year (Phase 1 & 2)' : (p1Due === 0 ? 'Phase 1 (Term 1) Transport Fee' : 'Initial Transport Installment')
+              term: due === 0 ? 'Full Academic Year (June to April)' : 'Initial Transport Fee Installment'
             }
           ] : []
         }
@@ -142,29 +132,16 @@ export default function AddStudentModal({ isOpen, onClose }) {
             </div>
           )}
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block font-bold text-[#231A12] uppercase mb-1">Student Full Name *</label>
-              <input
-                type="text"
-                required
-                value={formData.studentName}
-                onChange={(e) => setFormData({ ...formData, studentName: e.target.value })}
-                placeholder="e.g. Aarav Sharma"
-                className="w-full bg-[#FBF3E7]/70 border border-[#B08D57] rounded-xl px-3.5 py-2.5 font-bold text-[#231A12] placeholder-[#7A6A5C]/60 focus:border-[#D97B29] outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="block font-bold text-[#231A12] uppercase mb-1">Roll / Student ID</label>
-              <input
-                type="text"
-                value={formData.rollNo}
-                onChange={(e) => setFormData({ ...formData, rollNo: e.target.value })}
-                placeholder="e.g. FIA-7A-14"
-                className="w-full bg-[#FBF3E7]/70 border border-[#B08D57] rounded-xl px-3.5 py-2.5 font-bold text-[#231A12] placeholder-[#7A6A5C]/60 focus:border-[#D97B29] outline-none"
-              />
-            </div>
+          <div>
+            <label className="block font-bold text-[#231A12] uppercase mb-1">Student Full Name *</label>
+            <input
+              type="text"
+              required
+              value={formData.studentName}
+              onChange={(e) => setFormData({ ...formData, studentName: e.target.value })}
+              placeholder="e.g. Aarav Sharma"
+              className="w-full bg-[#FBF3E7]/70 border border-[#B08D57] rounded-xl px-3.5 py-2.5 font-bold text-[#231A12] placeholder-[#7A6A5C]/60 focus:border-[#D97B29] outline-none"
+            />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -202,30 +179,17 @@ export default function AddStudentModal({ isOpen, onClose }) {
             💡 <strong>Multi-Child Tip:</strong> If the parent already has another child registered under this mobile number, entering the same number here will automatically link both students to the parent's single login dashboard.
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block font-bold text-[#231A12] uppercase mb-1">School Name *</label>
-              <select
-                value={formData.schoolName}
-                onChange={(e) => setFormData({ ...formData, schoolName: e.target.value })}
-                className="w-full bg-[#FBF3E7]/70 border border-[#B08D57] rounded-xl px-3.5 py-2.5 font-bold text-[#231A12] focus:border-[#D97B29] outline-none"
-              >
-                {schools.map(s => (
-                  <option key={s.id} value={s.name}>{s.name}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block font-bold text-[#231A12] uppercase mb-1">Grade / Section</label>
-              <input
-                type="text"
-                value={formData.grade}
-                onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
-                placeholder="e.g. Grade 7-A"
-                className="w-full bg-[#FBF3E7]/70 border border-[#B08D57] rounded-xl px-3.5 py-2.5 font-bold text-[#231A12] placeholder-[#7A6A5C]/60 focus:border-[#D97B29] outline-none"
-              />
-            </div>
+          <div>
+            <label className="block font-bold text-[#231A12] uppercase mb-1">School Name *</label>
+            <select
+              value={formData.schoolName}
+              onChange={(e) => setFormData({ ...formData, schoolName: e.target.value })}
+              className="w-full bg-[#FBF3E7]/70 border border-[#B08D57] rounded-xl px-3.5 py-2.5 font-bold text-[#231A12] focus:border-[#D97B29] outline-none"
+            >
+              {schools.map(s => (
+                <option key={s.id} value={s.name}>{s.name}</option>
+              ))}
+            </select>
           </div>
 
           <div>
@@ -234,7 +198,7 @@ export default function AddStudentModal({ isOpen, onClose }) {
               type="text"
               value={formData.stopName}
               onChange={(e) => setFormData({ ...formData, stopName: e.target.value })}
-              placeholder="e.g. Jehan Circle / Society Gate, Gangapur Rd"
+              placeholder="e.g. Swami Vivekanand Nagar Gate / Society Gate, Borgad"
               className="w-full bg-[#FBF3E7]/70 border border-[#B08D57] rounded-xl px-3.5 py-2.5 font-bold text-[#231A12] placeholder-[#7A6A5C]/60 focus:border-[#D97B29] outline-none"
             />
           </div>
