@@ -656,19 +656,19 @@ export default function ParentDashboard() {
                 </div>
 
                 {/* QR Code Container */}
-                <div className="text-center p-4 bg-zinc-50 border border-zinc-200 rounded-xl space-y-2">
-                  <div className="w-44 h-44 mx-auto bg-white p-2 border border-zinc-300 rounded-xl shadow-xs flex items-center justify-center">
+                <div className="text-center p-4 bg-zinc-900 border border-zinc-700 rounded-2xl space-y-2">
+                  <div className="w-52 h-auto mx-auto bg-zinc-900 p-1.5 border border-zinc-700 rounded-xl shadow-md flex items-center justify-center">
                     <img 
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(`upi://pay?pa=8446391127@upi&pn=Siddharth%20Kailas%20Shardul&am=${payModalData.suggestedAmount}&cu=INR&tn=${encodeURIComponent(`BusFee-${payModalData.student.studentName}`)}`)}`}
-                      alt="UPI QR"
-                      className="w-full h-full object-contain"
+                      src="/siddharth_upi_qr.png"
+                      alt="Official Siddharth K Shardul GPay UPI QR"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   </div>
-                  <div className="text-[11px] text-[#7A6A5C]">
-                    Scan using PhonePe / Google Pay / Paytm / Any UPI App
+                  <div className="text-[11px] text-zinc-300 font-medium">
+                    Scan using Google Pay / PhonePe / Paytm / Any UPI App
                   </div>
-                  <div className="font-mono text-xs font-bold text-[#231A12] bg-white py-1 px-3 rounded-lg border border-zinc-200 inline-block">
-                    UPI ID: <strong>8446391127@upi</strong>
+                  <div className="font-mono text-xs font-bold text-amber-300 bg-zinc-800 py-1 px-3 rounded-lg border border-zinc-700 inline-block">
+                    UPI ID: <strong>siddarthshardul2@okaxis</strong>
                   </div>
                 </div>
 

@@ -17,7 +17,7 @@ export default function Navbar() {
 
   const handleCopyUpi = (e) => {
     e.stopPropagation();
-    navigator.clipboard.writeText('8446391127@upi');
+    navigator.clipboard.writeText('siddarthshardul2@okaxis');
     setCopiedUpi(true);
     setTimeout(() => setCopiedUpi(false), 2000);
   };
@@ -50,24 +50,23 @@ export default function Navbar() {
               type="button"
               onClick={() => setIsQrModalOpen(true)}
               className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-[#2A1810] hover:bg-[#20110A] text-white border border-[#B08D57]/60 hover:border-[#D97B29] rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer group flex-shrink-0"
-              title="Scan UPI QR Code to Pay (8446391127@upi)"
+              title="Scan UPI QR Code to Pay (siddarthshardul2@okaxis)"
             >
               <QrCode className="w-4 h-4 text-[#D97B29] group-hover:scale-110 transition-transform flex-shrink-0" />
               <span className="hidden md:inline text-zinc-300">UPI Pay:</span>
               <span className="font-mono text-[#E5A853] text-xs font-black">
                 <span className="inline sm:hidden">UPI</span>
-                <span className="hidden sm:inline">8446391127@upi</span>
+                <span className="hidden sm:inline">siddarthshardul2@okaxis</span>
               </span>
             </button>
 
             {user && (
               <button
                 onClick={handleLogout}
-                title="Logout"
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-[#2A1810] hover:bg-red-800 text-[#FBF3E7] hover:text-white border border-[#B08D57]/40 text-xs font-bold transition-colors cursor-pointer shadow-xs"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-900/30 hover:bg-red-900/50 text-red-200 border border-red-700/50 text-xs font-bold transition-colors cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                <span>Logout</span>
+                <span className="hidden sm:inline">Logout</span>
               </button>
             )}
           </div>
@@ -75,46 +74,46 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* PROFESSIONAL FINTECH UPI QR SCANNER MODAL */}
+      {/* UPI QR SCANNER MODAL */}
       {isQrModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-150 text-left">
-          <div className="bg-white border border-zinc-200 max-w-md w-full p-6 sm:p-7 shadow-2xl relative text-zinc-900 rounded-2xl font-sans">
-            
-            {/* Close Button */}
-            <button 
-              onClick={() => setIsQrModalOpen(false)}
-              className="absolute top-4 right-4 p-2 rounded-xl text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition-colors cursor-pointer"
-              title="Close"
-            >
-              <X className="w-4 h-4" />
-            </button>
-
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+          onClick={() => setIsQrModalOpen(false)}
+        >
+          <div 
+            className="bg-white border-2 border-[#B08D57] rounded-3xl max-w-sm w-full p-6 shadow-2xl relative text-zinc-900 animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Modal Header */}
-            <div className="flex items-center gap-3.5 pb-4 border-b border-zinc-100">
-              <div className="w-12 h-12 rounded-full overflow-hidden border border-zinc-200 flex-shrink-0 shadow-xs">
-                <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-700">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Verified Merchant Account</span>
+            <div className="flex items-center justify-between border-b border-zinc-200 pb-3 mb-4">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-xl bg-amber-50 text-[#D97B29] border border-amber-200">
+                  <QrCode className="w-5 h-5" />
                 </div>
-                <h3 className="text-base font-bold text-zinc-900 leading-tight">
-                  Siddharth School Bus &amp; Travels
-                </h3>
-                <p className="text-xs text-zinc-500">
-                  Proprietor: Mr. Siddharth Kailas Shardul • Nashik
-                </p>
+                <div>
+                  <h3 className="font-extrabold text-base text-zinc-900 leading-tight">
+                    UPI Payment QR
+                  </h3>
+                  <p className="text-xs text-zinc-500">
+                    Proprietor: Mr. Siddharth Kailas Shardul • Nashik
+                  </p>
+                </div>
               </div>
+              <button
+                onClick={() => setIsQrModalOpen(false)}
+                className="p-1.5 rounded-full hover:bg-zinc-100 text-zinc-500 hover:text-zinc-900 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
             {/* QR Scanner Showcase Card */}
             <div className="my-5 flex flex-col items-center">
-              <div className="bg-zinc-50 p-4 border border-zinc-200 rounded-xl shadow-xs text-center max-w-[240px] w-full">
+              <div className="bg-zinc-900 p-2 border border-zinc-700 rounded-2xl shadow-lg text-center max-w-[260px] w-full">
                 <img 
-                  src="/upi-qr.svg" 
-                  alt="Siddharth Travels UPI QR" 
-                  className="w-full h-auto object-contain mx-auto"
+                  src="/siddharth_upi_qr.png" 
+                  alt="Official Siddharth K Shardul GPay UPI QR Code" 
+                  className="w-full h-auto object-contain mx-auto rounded-xl"
                 />
               </div>
 
@@ -135,7 +134,7 @@ export default function Navbar() {
               <div className="flex items-center justify-between">
                 <span className="text-zinc-500 font-medium">UPI ID:</span>
                 <div className="flex items-center gap-2">
-                  <span className="font-mono font-bold text-zinc-900">8446391127@upi</span>
+                  <span className="font-mono font-bold text-zinc-900">siddarthshardul2@okaxis</span>
                   <button
                     type="button"
                     onClick={handleCopyUpi}

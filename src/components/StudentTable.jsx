@@ -1161,7 +1161,7 @@ export default function StudentTable({ onAddStudentClick }) {
                       className="w-full bg-zinc-50 border border-zinc-300 rounded-xl px-3.5 py-2 text-xs font-bold text-zinc-900 outline-none"
                     >
                       <option value="Offline Cash (Direct Handover)">Offline Cash (Direct Handover)</option>
-                      <option value="UPI (8446391127@upi / Scanner)">UPI (8446391127@upi / Scanner)</option>
+                      <option value="UPI (siddarthshardul2@okaxis / Scanner)">UPI (siddarthshardul2@okaxis / Scanner)</option>
                       <option value="Bank Transfer / NEFT">Bank Transfer / NEFT</option>
                       <option value="Cheque Deposit">Cheque Deposit</option>
                     </select>
