@@ -131,10 +131,10 @@ export const studentsAPI = {
 // ─── Payments API ───
 export const paymentsAPI = {
   // Record a payment (owner only)
-  record: (studentId, { amount, mode, term, notes }) =>
+  record: (studentId, { amount, mode, term, clearedMonths, notes }) =>
     apiFetch(`/payments/${studentId}`, {
       method: 'POST',
-      body: JSON.stringify({ amount, mode, term, notes })
+      body: JSON.stringify({ amount, mode, term, clearedMonths, notes })
     })
 };
 

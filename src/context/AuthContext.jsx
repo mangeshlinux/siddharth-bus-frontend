@@ -31,13 +31,23 @@ export function calculateFeeBreakdown(student) {
     { month: 'Apr', fullName: 'April 2027', monthIndex: 11, targetAmount: monthlyFee }
   ];
 
-  const clearedMonthsCount = dueAmount === 0 ? 11 : Math.min(11, Math.floor((paidAmount / (monthlyFee || 1)) + 0.05));
+  const clearedList = fee.clearedMonthsList || [];
+  const clearedCountFromList = clearedList.length;
+  const clearedMonthsCount = dueAmount === 0 ? 11 : Math.max(
+    Math.min(11, Math.floor((paidAmount / (monthlyFee || 1)) + 0.05)),
+    clearedCountFromList
+  );
 
-  const monthsList = academicMonths.map((m, idx) => ({
-    ...m,
-    isCleared: idx < clearedMonthsCount,
-    isPartial: idx === clearedMonthsCount && (paidAmount % (monthlyFee || 1) > 0) && dueAmount > 0
-  }));
+  const monthsList = academicMonths.map((m, idx) => {
+    const isExplicitlyCleared = clearedList.includes(m.month) || clearedList.includes(m.fullName);
+    const isClearedByCount = idx < clearedMonthsCount;
+    const isCleared = isExplicitlyCleared || isClearedByCount;
+    return {
+      ...m,
+      isCleared,
+      isPartial: !isCleared && idx === clearedMonthsCount && (paidAmount % (monthlyFee || 1) > 0) && dueAmount > 0
+    };
+  });
 
   return {
     totalAnnualFee,
@@ -46,7 +56,7 @@ export function calculateFeeBreakdown(student) {
     monthlyFee,
     monthlyDue,
     status: dueAmount === 0 ? 'PAID' : (paidAmount > 0 ? 'PARTIAL' : 'DUE'),
-    clearedMonthsCount,
+    clearedMonthsCount: monthsList.filter(m => m.isCleared).length,
     monthsList,
     nextDueDate: fee.nextDueDate || (dueAmount > 0 ? "Next Month 10th" : "Fully Paid (June–April)"),
     lastPaymentDate: fee.lastPaymentDate,
@@ -191,9 +201,9 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const recordPayment = useCallback(async (studentId, { amount, mode = "UPI", term = "School Bus Term Fee", notes = "" }) => {
+  const recordPayment = useCallback(async (studentId, { amount, mode = "UPI", term = "School Bus Term Fee", clearedMonths = [], notes = "" }) => {
     try {
-      const result = await paymentsAPI.record(studentId, { amount, mode, term, notes });
+      const result = await paymentsAPI.record(studentId, { amount, mode, term, clearedMonths, notes });
       if (result.student) {
         setStudents(prev => prev.map(s =>
           (s.id === studentId || s._id === studentId) ? result.student : s

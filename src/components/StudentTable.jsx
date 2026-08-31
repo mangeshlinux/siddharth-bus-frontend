@@ -59,6 +59,7 @@ export default function StudentTable({ onAddStudentClick }) {
   const [paymentAmount, setPaymentAmount] = useState('');
   const [paymentMode, setPaymentMode] = useState('Offline Cash');
   const [paymentTerm, setPaymentTerm] = useState('School Bus Fee Installment');
+  const [selectedMonthsForPay, setSelectedMonthsForPay] = useState([]);
 
   // Correction State (When owner typed wrong amount)
   const [correctTotalFee, setCorrectTotalFee] = useState('');
@@ -183,6 +184,7 @@ export default function StudentTable({ onAddStudentClick }) {
     
     setPaymentAmount('');
     setPaymentTerm('');
+    setSelectedMonthsForPay([]);
     setCorrectTotalFee(String(breakdown.totalAnnualFee));
     setCorrectPaidAmount(String(breakdown.paidAmount));
     setAdjustTotalFee(String(breakdown.totalAnnualFee));
@@ -213,11 +215,13 @@ export default function StudentTable({ onAddStudentClick }) {
     recordPayment(paymentModalStudent.id, {
       amount: Number(paymentAmount),
       mode: paymentMode,
-      term: paymentTerm
+      term: paymentTerm,
+      clearedMonths: selectedMonthsForPay
     });
 
     setPaymentModalStudent(null);
     setPaymentAmount('');
+    setSelectedMonthsForPay([]);
   };
 
   // 2. Correct Paid Fee / Total Fee (When typed wrong)
@@ -1126,6 +1130,75 @@ export default function StudentTable({ onAddStudentClick }) {
                     <div className="text-right">
                       <span className="text-red-700 block text-[10px] uppercase font-bold">Remaining Due</span>
                       <strong className="text-sm font-mono text-red-700">₹{b.dueAmount.toLocaleString('en-IN')}</strong>
+                    </div>
+                  </div>
+
+                  {/* Month Selector for Owner Approval */}
+                  <div className="space-y-1.5 bg-zinc-50/80 p-3 rounded-xl border border-zinc-200">
+                    <div className="flex items-center justify-between">
+                      <label className="block font-bold text-zinc-800 uppercase text-[10px]">
+                        Select Academic Month(s) to Mark Paid *
+                      </label>
+                      <span className="text-[10px] text-zinc-500 font-medium">
+                        ✓ Locked = Already Paid
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                      {b.monthsList.map((m) => {
+                        const isAlreadyPaid = m.isCleared;
+                        const isSelected = selectedMonthsForPay.includes(m.fullName);
+
+                        return (
+                          <button
+                            key={m.monthIndex}
+                            type="button"
+                            disabled={isAlreadyPaid}
+                            onClick={() => {
+                              if (isAlreadyPaid) return;
+                              let updated;
+                              if (isSelected) {
+                                updated = selectedMonthsForPay.filter(item => item !== m.fullName);
+                              } else {
+                                updated = [...selectedMonthsForPay, m.fullName];
+                              }
+                              setSelectedMonthsForPay(updated);
+
+                              // Auto calculate payment amount & description
+                              const computedAmt = updated.length * b.monthlyFee;
+                              if (computedAmt > 0) {
+                                setPaymentAmount(String(computedAmt));
+                                setPaymentTerm(`Transport Fee for ${updated.join(', ')}`);
+                              } else {
+                                setPaymentAmount('');
+                                setPaymentTerm('');
+                              }
+                            }}
+                            className={`p-2 rounded-lg text-left text-xs font-bold transition-all flex flex-col justify-between border ${
+                              isAlreadyPaid
+                                ? 'bg-emerald-100/90 text-emerald-900 border-emerald-300 cursor-not-allowed shadow-2xs opacity-90'
+                                : isSelected
+                                ? 'bg-amber-500 text-white border-amber-600 shadow-xs ring-2 ring-amber-400/50'
+                                : 'bg-white text-zinc-800 border-zinc-300 hover:border-amber-500 hover:bg-amber-50/50 cursor-pointer'
+                            }`}
+                            title={isAlreadyPaid ? `${m.fullName} is already marked paid and locked.` : `Click to select ${m.fullName}`}
+                          >
+                            <div className="flex items-center justify-between gap-1">
+                              <span className="text-[11px] truncate font-semibold">{m.fullName}</span>
+                              {isAlreadyPaid ? (
+                                <span className="text-[9px] bg-emerald-700 text-white font-black px-1.5 py-0.5 rounded flex-shrink-0">✓ PAID</span>
+                              ) : (
+                                <span className={`text-[10px] w-4 h-4 rounded flex items-center justify-center font-bold flex-shrink-0 ${isSelected ? 'bg-white text-amber-600' : 'border border-zinc-400'}`}>
+                                  {isSelected ? '✓' : ''}
+                                </span>
+                              )}
+                            </div>
+                            <div className={`text-[10px] font-mono mt-1 ${isAlreadyPaid ? 'text-emerald-800' : isSelected ? 'text-amber-100' : 'text-zinc-500'}`}>
+                              ₹{b.monthlyFee.toLocaleString('en-IN')}/mo
+                            </div>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
 
