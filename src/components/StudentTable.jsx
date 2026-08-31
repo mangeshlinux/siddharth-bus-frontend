@@ -538,19 +538,9 @@ export default function StudentTable({ onAddStudentClick }) {
                   </div>
                   <div className="col-span-2 flex items-center justify-between gap-1 border-t border-[#E5DAC6]/60 pt-1.5 mt-0.5">
                     <div className="truncate text-[#231A12]">
-                      <span className="text-[#7A6A5C] text-[10px] uppercase font-bold mr-1">Stop:</span>
-                      <span>📍 {s.stopName || 'Designated Stop'}</span>
+                      <span className="text-[#7A6A5C] text-[10px] uppercase font-bold mr-1">Route:</span>
+                      <span>🚌 {s.busNo || 'Bus #1'} ({s.routeName || 'Route 1'})</span>
                     </div>
-                    <button
-                      onClick={() => {
-                        setQuickStopStudent(s);
-                        setNewStopName(s.stopName || '');
-                      }}
-                      className="p-1 text-[#7A6A5C] hover:text-[#D97B29] flex-shrink-0"
-                      title="Edit Stop"
-                    >
-                      <Edit3 className="w-3 h-3" />
-                    </button>
                   </div>
                 </div>
 
@@ -663,7 +653,7 @@ export default function StudentTable({ onAddStudentClick }) {
               <th className="p-3 border-r border-[#E5DAC6]/60">Linked Parent Phone</th>
               <th className="p-3 border-r border-[#E5DAC6]/60">Parent Name</th>
               <th className="p-3 border-r border-[#E5DAC6]/60">School / Institute</th>
-              <th className="p-3 border-r border-[#E5DAC6]/60">Pickup Stop</th>
+              <th className="p-3 border-r border-[#E5DAC6]/60">Bus Route</th>
               <th className="p-3 text-right border-r border-[#E5DAC6]/60">Monthly &amp; Total Fee (₹)</th>
               <th className="p-3 text-right border-r border-[#E5DAC6]/60 text-emerald-800">Approved Paid (₹)</th>
               <th className="p-3 text-right border-r border-[#E5DAC6]/60 text-red-700">Monthly / Total Due (₹)</th>
@@ -737,22 +727,13 @@ export default function StudentTable({ onAddStudentClick }) {
                       <div className="font-medium text-[#231A12]">{s.schoolName}</div>
                     </td>
 
-                    {/* Pickup Stop with 1-Click Quick Edit */}
+                    {/* Bus Route */}
                     <td className="p-2.5 border-r border-[#E5DAC6]/60">
-                      <div className="flex items-center justify-between gap-1 max-w-[180px]">
-                        <span className="font-medium text-[#231A12] truncate" title={s.stopName}>
-                          📍 {s.stopName || 'Designated Stop'}
-                        </span>
-                        <button
-                          onClick={() => {
-                            setQuickStopStudent(s);
-                            setNewStopName(s.stopName || '');
-                          }}
-                          className="p-1 text-[#7A6A5C] hover:text-[#D97B29] cursor-pointer"
-                          title="Edit Pickup Stop"
-                        >
-                          <Edit3 className="w-3 h-3" />
-                        </button>
+                      <div className="font-medium text-[#231A12] text-xs" title={s.routeName}>
+                        🚌 {s.busNo || 'Bus #1'}
+                      </div>
+                      <div className="text-[10px] text-[#7A6A5C] truncate max-w-[170px]" title={s.routeName}>
+                        {s.routeName || 'Route 1'}
                       </div>
                     </td>
 
@@ -1405,16 +1386,6 @@ export default function StudentTable({ onAddStudentClick }) {
                   required
                   value={editModalStudent.schoolName}
                   onChange={(e) => setEditModalStudent({ ...editModalStudent, schoolName: e.target.value })}
-                  className="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block font-bold text-zinc-700 uppercase text-[10px] mb-1">Pickup Stop &amp; Landmark</label>
-                <input
-                  type="text"
-                  value={editModalStudent.stopName}
-                  onChange={(e) => setEditModalStudent({ ...editModalStudent, stopName: e.target.value })}
                   className="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 outline-none"
                 />
               </div>

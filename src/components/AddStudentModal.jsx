@@ -192,17 +192,6 @@ export default function AddStudentModal({ isOpen, onClose }) {
             </select>
           </div>
 
-          <div>
-            <label className="block font-bold text-[#231A12] uppercase mb-1">Pickup Stop &amp; Society Landmark</label>
-            <input
-              type="text"
-              value={formData.stopName}
-              onChange={(e) => setFormData({ ...formData, stopName: e.target.value })}
-              placeholder="e.g. Swami Vivekanand Nagar Gate / Society Gate, Borgad"
-              className="w-full bg-[#FBF3E7]/70 border border-[#B08D57] rounded-xl px-3.5 py-2.5 font-bold text-[#231A12] placeholder-[#7A6A5C]/60 focus:border-[#D97B29] outline-none"
-            />
-          </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block font-bold text-[#231A12] uppercase mb-1">Total Annual Transport Fee (₹)</label>

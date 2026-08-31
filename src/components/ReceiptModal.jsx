@@ -178,8 +178,8 @@ export default function ReceiptModal({
               <span className="text-[#222] font-semibold">{student.schoolName}</span>
             </div>
             <div>
-              <span className="text-[#666]">Pickup Stop: </span>
-              <span className="text-[#222] font-semibold">{student.stopName || 'Designated Stop'}</span>
+              <span className="text-[#666]">Bus Route: </span>
+              <span className="text-[#222] font-semibold">{student.busNo || 'Bus #1'} ({student.routeName || 'Route 1'})</span>
             </div>
           </div>
 

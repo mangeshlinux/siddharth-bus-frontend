@@ -310,7 +310,7 @@ export default function ParentDashboard() {
                   </h2>
                 </div>
                 <p className="text-xs text-[#7A6A5C] mt-0.5">
-                  <strong className="text-[#231A12]">{currentFocusedStudent.schoolName}</strong> • 📍 {currentFocusedStudent.stopName || 'Designated Stop'}
+                  <strong className="text-[#231A12]">{currentFocusedStudent.schoolName}</strong> • 🚌 {currentFocusedStudent.busNo || 'Bus #1'} ({currentFocusedStudent.routeName || 'Bus Route'})
                 </p>
               </div>
             </div>

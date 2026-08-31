@@ -111,7 +111,7 @@ export default function Home() {
             </h1>
 
             <p className="text-sm sm:text-base text-[#7A6A5C] font-medium leading-relaxed max-w-xl">
-              Reliable daily school transportation with doorstep &amp; society gate pickup across Borgad, Adarsh Nagar, Omkar Nagar, and Swami Vivekanand Nagar (Makhamalabad). Managed by <strong>Mr. Siddharth Kailas Shardul</strong>.
+              Reliable daily school transportation across Borgad, Adarsh Nagar, Omkar Nagar, and Swami Vivekanand Nagar (Makhamalabad). Managed by <strong>Mr. Siddharth Kailas Shardul</strong>.
             </p>
           </div>
 
@@ -123,7 +123,7 @@ export default function Home() {
             </span>
             <span className="flex items-center gap-1.5 px-3 py-1 bg-white border border-[#B08D57]/40 rounded-xl shadow-2xs">
               <MapPin className="w-3.5 h-3.5 text-[#D97B29]" />
-              <span>Doorstep Pickup</span>
+              <span>Dedicated Routes</span>
             </span>
             <span className="flex items-center gap-1.5 px-3 py-1 bg-white border border-[#B08D57]/40 rounded-xl shadow-2xs">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
