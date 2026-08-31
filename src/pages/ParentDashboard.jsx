@@ -1,36 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Users, 
-  MapPin, 
   PhoneCall, 
   Download, 
   Receipt, 
-  ShieldCheck, 
-  IndianRupee, 
   CheckCircle2, 
   AlertCircle, 
-  FileText, 
   Clock, 
-  Bus,
   Info,
   Check,
-  History,
-  Lock,
-  CreditCard,
   QrCode,
   ArrowRight,
-  Sparkles,
   Calendar,
-  Layers,
-  ChevronRight,
-  ExternalLink,
   X
 } from 'lucide-react';
 import { useAuth, calculateFeeBreakdown } from '../context/AuthContext';
 import ReceiptModal from '../components/ReceiptModal';
 
 export default function ParentDashboard() {
-  const { user, students, notices } = useAuth();
+  const { user, students } = useAuth();
   
   // Find all children linked to this parent's phone number
   const activeStudentList = students.filter(s => s.parentPhone === user?.phone);
@@ -103,19 +90,9 @@ export default function ParentDashboard() {
     return sum + b.monthlyFee;
   }, 0);
 
-  const totalHouseholdPaid = activeStudentList.reduce((sum, s) => {
-    const b = calculateFeeBreakdown(s);
-    return sum + b.paidAmount;
-  }, 0);
-
   const totalHouseholdDue = activeStudentList.reduce((sum, s) => {
     const b = calculateFeeBreakdown(s);
     return sum + b.dueAmount;
-  }, 0);
-
-  const totalHouseholdMonthlyDue = activeStudentList.reduce((sum, s) => {
-    const b = calculateFeeBreakdown(s);
-    return sum + b.monthlyDue;
   }, 0);
 
   const isHouseholdCleared = totalHouseholdDue === 0;

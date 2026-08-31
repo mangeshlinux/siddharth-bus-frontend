@@ -14,7 +14,7 @@ export default function BusLoader({
   message = "Waking up server...",
   subtext = "Initial spin-up on free hosting may take 15–30 seconds. Thank you for your patience!",
   fullScreen = true,
-  size = "md",
+  _size = "md",
   showTimer = true
 }) {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);

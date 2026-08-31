@@ -6,29 +6,20 @@ import {
   Edit3, 
   Trash2, 
   History, 
-  CheckCircle2, 
-  AlertCircle, 
-  Phone, 
-  MapPin, 
   X, 
-  Plus,
   Receipt,
   FileText,
   Copy,
   Check,
   CheckCheck,
-  SlidersHorizontal,
-  CheckSquare,
-  Square,
   Users,
-  RotateCcw,
-  RefreshCw,
-  Zap
+  Zap,
+  MapPin
 } from 'lucide-react';
 import { useAuth, calculateFeeBreakdown } from '../context/AuthContext';
 import ReceiptModal from './ReceiptModal';
 
-export default function StudentTable({ onAddStudentClick }) {
+export default function StudentTable({ onAddStudentClick: _onAddStudentClick }) {
   const { 
     students, 
     schools, 

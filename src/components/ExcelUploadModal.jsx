@@ -19,7 +19,6 @@ export default function ExcelUploadModal({ isOpen, onClose }) {
   const [parsedData, setParsedData] = useState([]);
   const [previewRows, setPreviewRows] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const fileInputRef = useRef(null);
 

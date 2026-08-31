@@ -1,26 +1,13 @@
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 import { 
-  Users, 
-  IndianRupee, 
-  AlertCircle, 
   FileSpreadsheet, 
-  Share2, 
   Download, 
-  RotateCcw,
   Plus,
   Trash2,
-  Building2,
-  TrendingUp,
-  CheckCircle2,
   Table,
   Radio,
-  Sparkles,
-  AlertTriangle,
-  Send,
-  Eye,
-  Calendar,
-  Clock
+  Send
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import StudentTable from '../components/StudentTable';
@@ -35,7 +22,6 @@ export default function OwnerPortal_x9f2() {
     notices, 
     deleteNotice, 
     clearAllNotices, 
-    resetDemoData,
     broadcastNotice
   } = useAuth();
 

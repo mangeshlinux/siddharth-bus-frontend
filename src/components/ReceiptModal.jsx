@@ -1,6 +1,5 @@
 import React from 'react';
-import { X, Printer, CheckCircle, Download, Check, ShieldCheck, Lock } from 'lucide-react';
-import Logo from './Logo';
+import { X, Download, Check } from 'lucide-react';
 
 // Helper to convert numbers into Indian Rupees in words
 function numberToWords(num) {

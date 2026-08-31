@@ -6,9 +6,7 @@ import {
   X, 
   ChevronLeft, 
   ChevronRight,
-  ExternalLink,
-  FileText,
-  Sparkles
+  FileText
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import ReceiptModal from './ReceiptModal';

@@ -1,33 +1,25 @@
 import React, { useState } from 'react';
 import { 
   Send, 
-  Share2, 
   Check, 
   X, 
   AlertTriangle, 
-  Sparkles, 
-  Trash2,
-  Bell,
   Radio,
-  Eye,
-  Clock,
-  Building2,
-  Filter
+  Eye
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function NotificationModal({ isOpen, onClose }) {
-  const { broadcastNotice, notices, deleteNotice, schools } = useAuth();
+  const { broadcastNotice } = useAuth();
   
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const [targetAudience, setTargetAudience] = useState('All Parents');
   const [isUrgent, setIsUrgent] = useState(false);
   const [sentStatus, setSentStatus] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handlePublish = async (e) => {
     e.preventDefault();
@@ -189,11 +181,11 @@ export default function NotificationModal({ isOpen, onClose }) {
 
               <button
                 type="submit"
-                disabled={!title.trim() || !message.trim()}
+                disabled={isSubmitting || !title.trim() || !message.trim()}
                 className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#D97B29] hover:bg-[#C4621C] text-white font-bold text-xs shadow-xs transition-colors disabled:opacity-50 cursor-pointer uppercase tracking-wider"
               >
                 <Send className="w-3.5 h-3.5" />
-                <span>Broadcast Now</span>
+                <span>{isSubmitting ? 'Publishing...' : 'Broadcast Now'}</span>
               </button>
             </div>
 

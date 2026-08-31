@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { LogOut, QrCode, X, Copy, Check, ShieldCheck } from 'lucide-react';
+import { LogOut, QrCode, X, Copy, Check } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Logo from './Logo';
 

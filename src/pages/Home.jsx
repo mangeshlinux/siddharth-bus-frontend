@@ -7,29 +7,23 @@ import {
   CheckCircle2, 
   PhoneCall, 
   MessageSquare, 
-  AlertCircle, 
-  Smartphone, 
-  Navigation, 
-  Sparkles, 
+  AlertCircle,
   MapPin,
-  Bell,
-  AlertTriangle,
-  QrCode
+  Smartphone
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import Logo from '../components/Logo';
+
+const dynamicWords = ["Safe & Secure", "100% Punctual", "Trusted & Reliable", "Joyful & Caring"];
 
 export default function Home() {
-  const { loginParent, notices } = useAuth();
+  const { loginParent } = useAuth();
   const navigate = useNavigate();
 
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
   const [activeWordIndex, setActiveWordIndex] = useState(0);
 
-  const dynamicWords = ["Safe & Secure", "100% Punctual", "Trusted & Reliable", "Joyful & Caring"];
-
-  // Cycle animated rotating headline words
+  // Auto-rotate hero words
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveWordIndex((prev) => (prev + 1) % dynamicWords.length);

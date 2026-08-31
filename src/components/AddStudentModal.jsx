@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, UserPlus, Phone } from 'lucide-react';
+import { X, UserPlus } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function AddStudentModal({ isOpen, onClose }) {

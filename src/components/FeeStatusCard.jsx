@@ -1,5 +1,5 @@
 import React from 'react';
-import { IndianRupee, CheckCircle2, AlertCircle, Calendar, CreditCard, Download, Clock } from 'lucide-react';
+import { CheckCircle2, AlertCircle, CreditCard, Download, Clock } from 'lucide-react';
 
 export default function FeeStatusCard({
   total = 32000,
