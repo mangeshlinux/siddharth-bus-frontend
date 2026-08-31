@@ -315,7 +315,7 @@ export default function ParentDashboard() {
               </div>
             </div>
 
-            {/* Monthly Fee Pill & Online Pay Button */}
+            {/* Monthly Fee Pill */}
             <div className="flex items-center gap-2.5 self-start sm:self-auto">
               <div className="bg-[#FAF7F0] border border-[#E5DAC6] px-3.5 py-1.5 rounded-xl text-right">
                 <span className="text-[10px] font-bold uppercase text-[#7A6A5C] block">
@@ -325,25 +325,6 @@ export default function ParentDashboard() {
                   ₹{focusedBreakdown.monthlyFee.toLocaleString('en-IN')}<span className="text-xs font-normal text-[#7A6A5C]">/mo</span>
                 </span>
               </div>
-
-              {focusedBreakdown.dueAmount > 0 ? (
-                <button
-                  onClick={() => setPayModalData({
-                    isOpen: true,
-                    student: currentFocusedStudent,
-                    suggestedAmount: focusedBreakdown.dueAmount
-                  })}
-                  className="px-4 py-2.5 rounded-xl bg-[#D97B29] hover:bg-[#C4621C] text-white text-xs font-bold uppercase tracking-wider shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
-                >
-                  <CreditCard className="w-3.5 h-3.5" />
-                  <span>Pay Online (₹{focusedBreakdown.dueAmount.toLocaleString('en-IN')})</span>
-                </button>
-              ) : (
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Full Year Cleared</span>
-                </span>
-              )}
             </div>
           </div>
 
